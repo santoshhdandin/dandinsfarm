@@ -36,8 +36,8 @@ export default function ContactPage() {
               <Phone className="text-green-400" size={24} />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Phone</h3>
-            <p className="text-zinc-400">+91 XXXXX XXXXX</p>
-            <p className="text-zinc-500 text-sm mt-2">Mon-Sat, 9 AM - 6 PM</p>
+            <p className="text-zinc-400">+91 96112 13993</p>
+            <p className="text-zinc-500 text-sm mt-2">Mon-Sat, 8 AM - 5 PM</p>
           </div>
 
           <div className="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800">
@@ -45,7 +45,8 @@ export default function ContactPage() {
               <Mail className="text-green-400" size={24} />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Email</h3>
-            <p className="text-zinc-400">info@dandinsfarm.com</p>
+            <p className="text-zinc-400">dandinshm@gmail.com</p>
+			<p className="text-zinc-400">santoshhdandin@gmail.com</p>
             <p className="text-zinc-500 text-sm mt-2">We'll respond within 24 hours</p>
           </div>
 
@@ -54,7 +55,7 @@ export default function ContactPage() {
               <MapPin className="text-green-400" size={24} />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Location</h3>
-            <p className="text-zinc-400">Karnataka, India</p>
+            <p className="text-zinc-400">Haveri, Karnataka, India</p>
             <p className="text-zinc-500 text-sm mt-2">Farm visits by appointment</p>
           </div>
         </div>
@@ -157,6 +158,33 @@ export default function ContactPage() {
           </div>
 
           <div className="space-y-6">
+
+            <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-2xl p-8 border border-green-800/50">
+              <h3 className="text-lg font-bold text-white mb-3">Farm Visits</h3>
+              <p className="text-zinc-300 text-sm leading-relaxed">
+                Interested in seeing how we grow organic produce? Schedule a farm visit to
+                experience sustainable agriculture firsthand. Perfect for students, aspiring
+                farmers, and anyone curious about organic farming!
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-2xl p-8 border border-green-800/50">
+              <h3 className="text-xl font-bold text-white mb-4">
+                Bulk Orders & Samples
+              </h3>
+              <p className="text-zinc-300 leading-relaxed mb-4">
+                We welcome bulk orders for our organic produce. Whether you're a retailer, restaurant,
+                or looking to purchase in quantity, we can provide:
+              </p>
+              <ul className="space-y-2 text-zinc-400 text-sm">
+                <li>✓ Competitive wholesale pricing</li>
+                <li>✓ Fresh harvest guarantee</li>
+                <li>✓ Flexible delivery options</li>
+                <li>✓ Sample boxes available</li>
+              </ul>
+            </div>
+
+			
             <div className="bg-zinc-900/50 rounded-2xl p-8 border border-zinc-800">
               <div className="bg-green-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                 <MessageCircle className="text-green-400" size={24} />
@@ -186,31 +214,7 @@ export default function ContactPage() {
                 </li>
               </ul>
             </div>
-
-            <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-2xl p-8 border border-green-800/50">
-              <h3 className="text-xl font-bold text-white mb-4">
-                Bulk Orders & Samples
-              </h3>
-              <p className="text-zinc-300 leading-relaxed mb-4">
-                We welcome bulk orders for our organic produce. Whether you're a retailer, restaurant,
-                or looking to purchase in quantity, we can provide:
-              </p>
-              <ul className="space-y-2 text-zinc-400 text-sm">
-                <li>✓ Competitive wholesale pricing</li>
-                <li>✓ Fresh harvest guarantee</li>
-                <li>✓ Flexible delivery options</li>
-                <li>✓ Sample boxes available</li>
-              </ul>
-            </div>
-
-            <div className="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800">
-              <h3 className="text-lg font-bold text-white mb-3">Farm Visits</h3>
-              <p className="text-zinc-300 text-sm leading-relaxed">
-                Interested in seeing how we grow organic produce? Schedule a farm visit to
-                experience sustainable agriculture firsthand. Perfect for students, aspiring
-                farmers, and anyone curious about organic farming!
-              </p>
-            </div>
+			
           </div>
         </div>
       </div>
