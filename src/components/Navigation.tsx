@@ -13,7 +13,7 @@ export default function Navigation({ currentPage, setCurrentPage }: NavigationPr
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'story', label: 'Our Story' },
-    { id: 'crops', label: 'What We Grow' },
+    { id: 'crops', label: 'Our Farm Produce' },
     { id: 'gallery', label: 'Gallery' },
     { id: 'education', label: 'Learn Farming' },
     { id: 'contact', label: 'Contact' },

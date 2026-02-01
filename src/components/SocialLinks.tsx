@@ -2,9 +2,9 @@ import { Instagram, Youtube, Facebook } from 'lucide-react';
 
 export default function SocialLinks() {
   const socials = [
-    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Instagram, href: 'https://www.instagram.com/i.ai.raitha', label: 'Instagram' },
     { icon: Youtube, href: 'https://www.youtube.com/@FarmingWithAIRaitha', label: 'YouTube' },
-    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61585580106714', label: 'Facebook' },
   ];
 
   return (
