@@ -1,5 +1,7 @@
 import { Mail, Phone, MapPin, MessageCircle, Send } from 'lucide-react';
 import { useState } from 'react';
+import emailjs from "emailjs-com";
+
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -10,11 +12,40 @@ export default function ContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert('Thank you for your inquiry! We will get back to you soon.');
-    setFormData({ name: '', email: '', phone: '', subject: 'general', message: '' });
-  };
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+
+  emailjs
+    .send(
+      "service_f1okphi",
+      "template_9gckmio",
+      {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+      },
+      "PcjxpaGeoPUUlmdkB"
+    )
+    .then(
+      () => {
+        alert("Message sent successfully!");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "general",
+          message: "",
+        });
+      },
+      (error) => {
+        console.error(error);
+        alert("Failed to send message");
+      }
+    );
+};
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,7 +76,7 @@ export default function ContactPage() {
               <Mail className="text-green-400" size={24} />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Email</h3>
-            <p className="text-zinc-400">dandinshm@gmail.com</p>
+            <p className="text-zinc-400">dandinhm@gmail.com</p>
 			<p className="text-zinc-400">santoshhdandin@gmail.com</p>
             <p className="text-zinc-500 text-sm mt-2">We'll respond within 24 hours</p>
           </div>
