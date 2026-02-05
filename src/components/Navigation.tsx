@@ -13,6 +13,7 @@ export default function Navigation({ currentPage, setCurrentPage }: NavigationPr
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'story', label: 'Our Story' },
+    { id: 'market-weather', label: 'ಕರ್ನಾಟಕ ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ' },
     { id: 'crops', label: 'Our Farm Produce' },
     { id: 'gallery', label: 'Gallery' },
     { id: 'education', label: 'Learn Farming' },
