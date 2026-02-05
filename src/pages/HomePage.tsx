@@ -71,7 +71,19 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-		
+
+        <div className="mt-12 pt-8 border-t border-zinc-800">
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <a href='https://free-hit-counters.net/' className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">Visitor Counter</a>
+            <div dangerouslySetInnerHTML={{
+              __html: `
+                <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=d4d02367f23258575d4cfc7fd517bafa7a6b7eda'></script>
+                <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1496940/t/9"></script>
+              `
+            }} />
+          </div>
+        </div>
+
       </div>
     </div>
   );

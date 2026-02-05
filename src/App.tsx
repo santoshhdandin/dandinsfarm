@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import StoryPage from './pages/StoryPage';
+import MarketWeatherPage from './pages/MarketWeatherPage';
 import CropsPage from './pages/CropsPage';
 import GalleryPage from './pages/GalleryPage';
 import EducationPage from './pages/EducationPage';
@@ -16,6 +17,8 @@ function App() {
         return <HomePage />;
       case 'story':
         return <StoryPage />;
+      case 'market-weather':
+        return <MarketWeatherPage />;
       case 'crops':
         return <CropsPage setCurrentPage={setCurrentPage} />;
       case 'gallery':
