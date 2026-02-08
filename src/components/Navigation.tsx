@@ -10,10 +10,10 @@ export default function Navigation() {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/ourstory', label: 'Our Story' },
-    { path: '/karnataka-market', label: 'ಕರ್ನಾಟಕ ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ' },
     { path: '/our-farm-produce', label: 'Our Farm Produce' },
     { path: '/gallery', label: 'Gallery' },
     { path: '/learn-farming', label: 'Learn Farming' },
+    { path: '/karnataka-market', label: 'ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ' },
     { path: '/contact', label: 'Contact' },
   ];
 

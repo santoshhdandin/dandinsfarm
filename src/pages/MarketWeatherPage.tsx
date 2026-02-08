@@ -41,7 +41,6 @@ export default function MarketWeatherPage() {
     { crop: 'Papaya', cropKannada: 'ಪಪ್ಪಾಯಿ', bangalore: '30', tumkur: '28', mysore: '31', hubli: '29', dharwad: '30', belgaum: '30', davangere: '29', shimoga: '32', trend: 'stable' },
     { crop: 'Mango', cropKannada: 'ಮಾವು', bangalore: '120', tumkur: '115', mysore: '125', hubli: '118', dharwad: '120', belgaum: '122', davangere: '119', shimoga: '128', trend: 'up' },
     { crop: 'Drumstick', cropKannada: 'ನುಗ್ಗೆಕಾಯಿ', bangalore: '70', tumkur: '68', mysore: '72', hubli: '67', dharwad: '69', belgaum: '71', davangere: '70', shimoga: '73', trend: 'up' },
-    { crop: 'Vegetables (Avg)', cropKannada: 'ತರಕಾರಿಗಳು', bangalore: '40', tumkur: '38', mysore: '42', hubli: '37', dharwad: '39', belgaum: '41', davangere: '40', shimoga: '43', trend: 'stable' },
   ]);
 
   const [weatherData] = useState<WeatherDistrict[]>([
@@ -124,7 +123,7 @@ export default function MarketWeatherPage() {
     <div className="min-h-screen px-4 py-24">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-          ಕರ್ನಾಟಕ ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ
+          ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ
         </h1>
         <p className="text-lg text-zinc-400 mb-8">Karnataka Market & Weather</p>
 
