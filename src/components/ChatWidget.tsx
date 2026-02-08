@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Mic, Paperclip, Smile } from 'lucide-react';
 
+const CHAT_BACKEND = "https://lyzr-agnt-production.up.railway.app/chat";
+
 interface Message {
   id: number;
   text: string;
@@ -37,31 +39,56 @@ export default function ChatWidget() {
     }
   }, [isOpen]);
 
-  const handleSend = () => {
-    if (!inputValue.trim()) return;
+const handleSend = async () => {
+  if (!inputValue.trim()) return;
 
-    const newMessage: Message = {
-      id: messages.length + 1,
-      text: inputValue,
-      sender: 'user',
+  const newMessage: Message = {
+    id: messages.length + 1,
+    text: inputValue,
+    sender: 'user',
+    timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+  };
+
+  setMessages([...messages, newMessage]);
+  const messageToSend = inputValue;
+  setInputValue('');
+  setIsTyping(true);
+
+  try {
+    const res = await fetch(CHAT_BACKEND, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: messageToSend })
+    });
+    
+    if (!res.ok) {
+      throw new Error('Failed to get response');
+    }
+    
+    const data = await res.json();
+    
+    const aiResponse: Message = {
+      id: messages.length + 2,
+      text: data.reply || "I'm having trouble responding right now. Please try again.",
+      sender: 'ai',
       timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
     };
+    
+    setMessages((prev) => [...prev, aiResponse]);
+  } catch (err) {
+    console.error('Chat error:', err);
+    const errorMessage: Message = {
+      id: messages.length + 2,
+      text: "Sorry, I'm having trouble connecting. Please try again or contact us directly.",
+      sender: 'ai',
+      timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+    };
+    setMessages((prev) => [...prev, errorMessage]);
+  } finally {
+    setIsTyping(false);
+  }
+};
 
-    setMessages([...messages, newMessage]);
-    setInputValue('');
-    setIsTyping(true);
-
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: messages.length + 2,
-        text: 'Thank you for your message! Our AI assistant is currently being trained to provide you with the best information about our organic farming practices, crops, and products. For immediate assistance, please contact us directly.',
-        sender: 'ai',
-        timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-      };
-      setMessages((prev) => [...prev, aiResponse]);
-      setIsTyping(false);
-    }, 2000);
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -89,7 +116,7 @@ export default function ChatWidget() {
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-green-600 animate-pulse" />
               </div>
               <div>
-                <h3 className="font-bold text-white">AI Farm Assistant</h3>
+                <h3 className="font-bold text-white">Dandin's Farm Assistant</h3>
                 <p className="text-xs text-green-100">Online</p>
               </div>
             </div>
