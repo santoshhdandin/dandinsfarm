@@ -56,7 +56,8 @@ const [chatMessages, setChatMessages] = useState<{sender: 'user' | 'agent', text
 const [chatInput, setChatInput] = useState("");
 
 // Replace with your Railway backend URL
-const CHAT_BACKEND = "https://lyzr-agnt-production.up.railway.app/chat";
+// const CHAT_BACKEND = "https://lyzr-agnt-production.up.railway.app/chat";
+const CHAT_BACKEND = "https://plain-tree-e3d0.santoshhdandin.workers.dev/";
 
 const sendChatMessage = async () => {
   if (!chatInput.trim()) return;
