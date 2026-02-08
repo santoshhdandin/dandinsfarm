@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Mic, Paperclip, Smile } from 'lucide-react';
 
-const CHAT_BACKEND = "https://lyzr-agnt-production.up.railway.app/chat";
+//const CHAT_BACKEND = "https://lyzr-agnt-production.up.railway.app/chat";
+const CHAT_BACKEND = "https://plain-tree-e3d0.santoshhdandin.workers.dev/";
 
 interface Message {
   id: number;
@@ -15,7 +16,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: 'Hello! Welcome to Dandin\'s Farm. How can I help you today?',
+      text: 'Hello! Welcome to Dandin\'s Farm. How can I help YOU today ?',
       sender: 'ai',
       timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
     },
