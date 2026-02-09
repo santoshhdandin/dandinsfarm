@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowLeft, MapPin } from 'lucide-react';
 
 interface Crop {
@@ -749,11 +750,7 @@ const crops: Crop[] = [
   },
 ];
 
-interface CropsPageProps {
-  setCurrentPage: (page: string) => void;
-}
-
-export default function CropsPage({ setCurrentPage }: CropsPageProps) {
+export default function CropsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null);
 
@@ -836,16 +833,16 @@ export default function CropsPage({ setCurrentPage }: CropsPageProps) {
                 <p className="text-zinc-300 mb-4">
                   Contact us for fresh, organic {selectedCrop.name.toLowerCase()} directly from our farm.
                 </p>
-                <button
+                <Link
+                  to="/contact"
                   onClick={() => {
                     setSelectedCrop(null);
-                    setCurrentPage('contact');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
+                  className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
                 >
                   Contact Us
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -928,7 +925,7 @@ export default function CropsPage({ setCurrentPage }: CropsPageProps) {
           Discover our organic produce, grown with care and dedication
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
           {categories.map((category) => {
             const categoryCount = crops.filter((c) => c.category === category.id).length;
             return (

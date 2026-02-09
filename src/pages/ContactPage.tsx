@@ -51,6 +51,37 @@ const handleSubmit = (e: React.FormEvent) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+
+const [chatMessages, setChatMessages] = useState<{sender: 'user' | 'agent', text: string}[]>([]);
+const [chatInput, setChatInput] = useState("");
+
+// Replace with your Railway backend URL
+// const CHAT_BACKEND = "https://lyzr-agnt-production.up.railway.app/chat";
+const CHAT_BACKEND = "https://plain-tree-e3d0.santoshhdandin.workers.dev/";
+
+const sendChatMessage = async () => {
+  if (!chatInput.trim()) return;
+
+  // Add user message
+  setChatMessages(prev => [...prev, { sender: 'user', text: chatInput }]);
+  const messageToSend = chatInput;
+  setChatInput("");
+
+  try {
+    const res = await fetch(CHAT_BACKEND, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: messageToSend })
+    });
+    const data = await res.json();
+    setChatMessages(prev => [...prev, { sender: 'agent', text: data.reply || "No reply" }]);
+  } catch (err) {
+    setChatMessages(prev => [...prev, { sender: 'agent', text: "Error contacting server" }]);
+    console.error(err);
+  }
+};
+
+
   return (
     <div className="min-h-screen px-4 py-24">
       <div className="max-w-6xl mx-auto">
@@ -216,35 +247,47 @@ const handleSubmit = (e: React.FormEvent) => {
             </div>
 
 			
-            <div className="bg-zinc-900/50 rounded-2xl p-8 border border-zinc-800">
-              <div className="bg-green-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <MessageCircle className="text-green-400" size={24} />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4">
-                AI Chat Agent Coming Soon!
-              </h3>
-              <p className="text-zinc-300 leading-relaxed mb-4">
-                We're working on an intelligent chat assistant that will help you:
-              </p>
-              <ul className="space-y-2 text-zinc-400">
-                <li className="flex items-start space-x-2">
-                  <span className="text-green-400 mt-1">•</span>
-                  <span>Get instant answers about our crops and farming practices</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-green-400 mt-1">•</span>
-                  <span>Check availability and pricing for bulk orders</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-green-400 mt-1">•</span>
-                  <span>Schedule farm visits and consultations</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-green-400 mt-1">•</span>
-                  <span>Learn about organic farming techniques</span>
-                </li>
-              </ul>
-            </div>
+			<div className="bg-zinc-900/50 rounded-2xl p-8 border border-zinc-800">
+			  <div className="bg-green-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+				<MessageCircle className="text-green-400" size={24} />
+			  </div>
+			  <h3 className="text-2xl font-bold text-white mb-4">
+				AI Chat Agent
+			  </h3>
+			  <div className="space-y-2">
+				
+				<div className="flex flex-col space-y-2 h-64 overflow-y-auto p-2 bg-zinc-800 rounded-lg mb-2">
+				  {chatMessages.map((msg, i) => (
+					<div
+					  key={i}
+					  className={`px-3 py-2 rounded-lg max-w-[80%] ${
+						msg.sender === "user" ? "bg-green-600 text-white self-end" : "bg-blue-600 text-white self-start"
+					  }`}
+					>
+					  {msg.text}
+					</div>
+				  ))}
+				</div>
+				<div className="flex space-x-2">
+				  <input
+					type="text"
+					className="flex-1 px-3 py-2 rounded-lg bg-zinc-900 text-white placeholder-zinc-500 focus:outline-none"
+					placeholder="Ask your question..."
+					value={chatInput}
+					onChange={(e) => setChatInput(e.target.value)}
+					onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
+				  />
+				  <button
+					className="bg-green-600 px-4 py-2 rounded-lg text-white hover:bg-green-700"
+					onClick={sendChatMessage}
+				  >
+					Send
+				  </button>
+				</div>
+
+				
+			  </div>
+			</div>
 			
           </div>
         </div>

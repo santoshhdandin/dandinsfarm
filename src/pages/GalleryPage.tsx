@@ -1,5 +1,6 @@
 import { Camera, Leaf, Apple, Mountain, X, Sprout } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface GalleryImage {
   id: number;
@@ -14,11 +15,7 @@ interface Category {
   images: GalleryImage[];
 }
 
-interface GalleryPageProps {
-  setCurrentPage: (page: string) => void;
-}
-
-export default function GalleryPage({ setCurrentPage }: GalleryPageProps) {
+export default function GalleryPage() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
@@ -299,15 +296,13 @@ export default function GalleryPage({ setCurrentPage }: GalleryPageProps) {
             Experience the beauty of organic farming firsthand. Schedule a farm visit to see our crops,
             meet our animals, and learn about sustainable agriculture practices.
           </p>
-          <button
-            onClick={() => {
-              setCurrentPage('contact');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors font-medium"
+          <Link
+            to="/contact"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors font-medium"
           >
             Contact Us to Schedule a Visit
-          </button>
+          </Link>
         </div>
 
         <div className="mt-8 text-center text-zinc-500 text-sm">

@@ -1,246 +1,293 @@
-import { TrendingUp, TrendingDown, Minus, Cloud, Droplets, ThermometerSun } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { TrendingUp, TrendingDown, Minus, Cloud, CloudRain, Sun, Wind, ThermometerSun } from 'lucide-react';
+import { useState } from 'react';
 
-interface MarketItem {
-  name: string;
-  nameKannada: string;
-  price: string;
-  market: string;
+interface MarketPrice {
+  crop: string;
+  cropKannada: string;
+  bangalore: string;
+  tumkur: string;
+  mysore: string;
+  hubli: string;
+  dharwad: string;
+  belgaum: string;
+  davangere: string;
+  shimoga: string;
   trend: 'up' | 'down' | 'stable';
-  unit: string;
 }
 
-interface WeatherData {
+interface WeatherDistrict {
+  district: string;
+  districtKannada: string;
   temp: number;
+  condition: string;
   humidity: number;
-  rainProb: number;
-  description: string;
-}
-
-interface ForecastDay {
-  date: string;
-  temp: number;
-  rainProb: number;
-  description: string;
+  windSpeed: number;
+  minTemp: number;
+  maxTemp: number;
+  forecast: string;
+  icon: typeof Sun;
 }
 
 export default function MarketWeatherPage() {
-  const [marketData, setMarketData] = useState<MarketItem[]>([]);
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [forecast, setForecast] = useState<ForecastDay[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [marketData] = useState<MarketPrice[]>([
+    { crop: 'Tomato', cropKannada: 'ಟೊಮೇಟೋ', bangalore: '45', tumkur: '42', mysore: '48', hubli: '40', dharwad: '43', belgaum: '46', davangere: '44', shimoga: '41', trend: 'up' },
+    { crop: 'Banana', cropKannada: 'ಬಾಳೆಹಣ್ಣು', bangalore: '35', tumkur: '33', mysore: '36', hubli: '34', dharwad: '35', belgaum: '37', davangere: '35', shimoga: '34', trend: 'stable' },
+    { crop: 'Arecanut', cropKannada: 'ಅಡಿಕೆ', bangalore: '32000', tumkur: '31500', mysore: '32200', hubli: '31800', dharwad: '32100', belgaum: '31900', davangere: '32000', shimoga: '32500', trend: 'down' },
+    { crop: 'Coconut', cropKannada: 'ತೆಂಗಿನಕಾಯಿ', bangalore: '25', tumkur: '24', mysore: '26', hubli: '23', dharwad: '25', belgaum: '24', davangere: '25', shimoga: '26', trend: 'up' },
+    { crop: 'Turmeric', cropKannada: 'ಅರಿಶಿನ', bangalore: '140', tumkur: '138', mysore: '142', hubli: '137', dharwad: '140', belgaum: '139', davangere: '141', shimoga: '143', trend: 'stable' },
+    { crop: 'Lemon', cropKannada: 'ನಿಂಬೆ', bangalore: '80', tumkur: '78', mysore: '82', hubli: '75', dharwad: '79', belgaum: '81', davangere: '80', shimoga: '83', trend: 'up' },
+    { crop: 'Guava', cropKannada: 'ಪೇರಲೆ', bangalore: '55', tumkur: '52', mysore: '56', hubli: '53', dharwad: '54', belgaum: '55', davangere: '54', shimoga: '57', trend: 'stable' },
+    { crop: 'Jamun', cropKannada: 'ಜಾಮೂನು', bangalore: '65', tumkur: '63', mysore: '67', hubli: '62', dharwad: '64', belgaum: '66', davangere: '65', shimoga: '68', trend: 'down' },
+    { crop: 'Papaya', cropKannada: 'ಪಪ್ಪಾಯಿ', bangalore: '30', tumkur: '28', mysore: '31', hubli: '29', dharwad: '30', belgaum: '30', davangere: '29', shimoga: '32', trend: 'stable' },
+    { crop: 'Mango', cropKannada: 'ಮಾವು', bangalore: '120', tumkur: '115', mysore: '125', hubli: '118', dharwad: '120', belgaum: '122', davangere: '119', shimoga: '128', trend: 'up' },
+    { crop: 'Drumstick', cropKannada: 'ನುಗ್ಗೆಕಾಯಿ', bangalore: '70', tumkur: '68', mysore: '72', hubli: '67', dharwad: '69', belgaum: '71', davangere: '70', shimoga: '73', trend: 'up' },
+  ]);
 
-  useEffect(() => {
-    fetchMarketData();
-    fetchWeatherData();
-  }, []);
+  const [weatherData] = useState<WeatherDistrict[]>([
+    {
+      district: 'Haveri',
+      districtKannada: 'ಹಾವೇರಿ',
+      temp: 28,
+      condition: 'Partly Cloudy',
+      humidity: 65,
+      windSpeed: 12,
+      minTemp: 22,
+      maxTemp: 32,
+      forecast: 'Slight chance of rain',
+      icon: Cloud
+    },
+    {
+      district: 'Hubli',
+      districtKannada: 'ಹುಬ್ಬಳ್ಳಿ',
+      temp: 30,
+      condition: 'Sunny',
+      humidity: 55,
+      windSpeed: 15,
+      minTemp: 24,
+      maxTemp: 34,
+      forecast: 'Clear skies expected',
+      icon: Sun
+    },
+    {
+      district: 'Bangalore',
+      districtKannada: 'ಬೆಂಗಳೂರು',
+      temp: 26,
+      condition: 'Light Rain',
+      humidity: 75,
+      windSpeed: 10,
+      minTemp: 20,
+      maxTemp: 29,
+      forecast: 'Rain likely today',
+      icon: CloudRain
+    },
+  ]);
 
-  const fetchMarketData = async () => {
-    try {
-      const mockData: MarketItem[] = [
-        { name: 'Tomato', nameKannada: 'ಟೊಮೇಟೋ', price: '45', market: 'Bengaluru', trend: 'up', unit: 'kg' },
-        { name: 'Banana', nameKannada: 'ಬಾಳೆಹಣ್ಣು', price: '35', market: 'Tumakuru', trend: 'stable', unit: 'dozen' },
-        { name: 'Arecanut', nameKannada: 'ಅಡಿಕೆ', price: '32000', market: 'Shivamogga', trend: 'down', unit: 'quintal' },
-        { name: 'Coconut', nameKannada: 'ತೆಂಗಿನಕಾಯಿ', price: '25', market: 'Mysuru', trend: 'up', unit: 'piece' },
-        { name: 'Turmeric', nameKannada: 'ಅರಿಶಿನ', price: '140', market: 'Bengaluru', trend: 'stable', unit: 'kg' },
-        { name: 'Lemon', nameKannada: 'ನಿಂಬೆ', price: '80', market: 'Tumakuru', trend: 'up', unit: 'kg' },
-        { name: 'Guava', nameKannada: 'ಪೇರಲೆ', price: '55', market: 'Mysuru', trend: 'stable', unit: 'kg' },
-        { name: 'Jamun', nameKannada: 'ಜಾಮೂನು', price: '65', market: 'Bengaluru', trend: 'down', unit: 'kg' },
-        { name: 'Papaya', nameKannada: 'ಪಪ್ಪಾಯಿ', price: '30', market: 'Shivamogga', trend: 'stable', unit: 'kg' },
-        { name: 'Mango', nameKannada: 'ಮಾವು', price: '120', market: 'Mysuru', trend: 'up', unit: 'kg' },
-        { name: 'Drumstick', nameKannada: 'ನುಗ್ಗೆಕಾಯಿ', price: '70', market: 'Bengaluru', trend: 'up', unit: 'kg' },
-        { name: 'Vegetables', nameKannada: 'ತರಕಾರಿಗಳು', price: '40', market: 'Tumakuru', trend: 'stable', unit: 'kg' },
-      ];
-      setMarketData(mockData);
-    } catch (error) {
-      console.error('Error fetching market data:', error);
-    }
-  };
-
-  const fetchWeatherData = async () => {
-    try {
-      const mockWeather: WeatherData = {
-        temp: 28,
-        humidity: 65,
-        rainProb: 40,
-        description: 'Partly cloudy',
-      };
-
-      const mockForecast: ForecastDay[] = [
-        { date: 'Tomorrow', temp: 29, rainProb: 30, description: 'Sunny' },
-        { date: 'Day 2', temp: 27, rainProb: 60, description: 'Light rain' },
-        { date: 'Day 3', temp: 26, rainProb: 50, description: 'Cloudy' },
-      ];
-
-      setWeatherData(mockWeather);
-      setForecast(mockForecast);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-      setLoading(false);
-    }
-  };
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+  const [lastUpdated] = useState(new Date().toLocaleString());
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'up':
-        return <TrendingUp size={20} className="text-red-400" />;
+        return <TrendingUp size={16} className="text-red-400" />;
       case 'down':
-        return <TrendingDown size={20} className="text-green-400" />;
+        return <TrendingDown size={16} className="text-green-400" />;
       default:
-        return <Minus size={20} className="text-zinc-500" />;
+        return <Minus size={16} className="text-zinc-500" />;
     }
   };
 
-  const getTrendSymbol = (trend: string) => {
-    switch (trend) {
-      case 'up':
-        return '🔺';
-      case 'down':
-        return '🔻';
-      default:
-        return '➖';
+  const handleSort = (key: string) => {
+    let direction: 'asc' | 'desc' = 'asc';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
     }
+    setSortConfig({ key, direction });
   };
+
+  const sortedMarketData = [...marketData].sort((a, b) => {
+    if (!sortConfig) return 0;
+
+    const aValue = a[sortConfig.key as keyof MarketPrice];
+    const bValue = b[sortConfig.key as keyof MarketPrice];
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortConfig.direction === 'asc'
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    }
+
+    return 0;
+  });
 
   return (
     <div className="min-h-screen px-4 py-24">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-          ಕರ್ನಾಟಕ ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
+          ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ
         </h1>
-        <p className="text-xl text-zinc-400 mb-12">Karnataka Market & Weather</p>
+        <p className="text-lg text-zinc-400 mb-8">Karnataka Market & Weather</p>
 
-        <section className="mb-16">
-          <div className="mb-8">
-            <h2 className="text-4xl font-bold text-white mb-2">ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು</h2>
-            <p className="text-lg text-zinc-400">Market Prices</p>
+        <section className="mb-12">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-3xl font-bold text-white mb-1">ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು</h2>
+              <p className="text-sm text-zinc-400">Market Prices (₹ per kg/quintal)</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-zinc-500">Last Updated</p>
+              <p className="text-sm text-zinc-400">{lastUpdated}</p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {marketData.map((item, index) => (
-              <div
-                key={index}
-                className="bg-zinc-900/50 rounded-xl p-5 border border-zinc-800 hover:border-green-600 transition-all"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-xl font-bold text-white">{item.nameKannada}</h3>
-                    <p className="text-sm text-zinc-500">{item.name}</p>
-                  </div>
-                  <span className="text-2xl">{getTrendSymbol(item.trend)}</span>
-                </div>
-
-                <div className="mb-3">
-                  <div className="text-3xl font-bold text-green-400 mb-1">
-                    ₹{item.price}
-                  </div>
-                  <p className="text-sm text-zinc-500">per {item.unit}</p>
-                </div>
-
-                <div className="flex items-center justify-between pt-3 border-t border-zinc-800">
-                  <span className="text-sm text-zinc-400">{item.market}</span>
-                  {getTrendIcon(item.trend)}
-                </div>
-              </div>
-            ))}
+          <div className="bg-zinc-900/50 rounded-xl border border-zinc-800 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-zinc-800/50">
+                  <tr>
+                    <th
+                      onClick={() => handleSort('crop')}
+                      className="px-4 py-3 text-left text-sm font-semibold text-zinc-300 cursor-pointer hover:bg-zinc-700/50 transition-colors sticky left-0 bg-zinc-800/50 backdrop-blur-sm"
+                    >
+                      Crop Name
+                      <div className="text-xs font-normal text-zinc-500">ಬೆಳೆ ಹೆಸರು</div>
+                    </th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Bangalore<div className="text-xs font-normal text-zinc-500">ಬೆಂಗಳೂರು</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Tumkur<div className="text-xs font-normal text-zinc-500">ತುಮಕೂರು</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Mysore<div className="text-xs font-normal text-zinc-500">ಮೈಸೂರು</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Hubli<div className="text-xs font-normal text-zinc-500">ಹುಬ್ಬಳ್ಳಿ</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Dharwad<div className="text-xs font-normal text-zinc-500">ಧಾರವಾಡ</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Belgaum<div className="text-xs font-normal text-zinc-500">ಬೆಳಗಾವಿ</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Davangere<div className="text-xs font-normal text-zinc-500">ದಾವಣಗೆರೆ</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Shimoga<div className="text-xs font-normal text-zinc-500">ಶಿವಮೊಗ್ಗ</div></th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Trend</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedMarketData.map((item, index) => (
+                    <tr
+                      key={index}
+                      className={`border-t border-zinc-800 hover:bg-zinc-800/30 transition-colors ${
+                        index % 2 === 0 ? 'bg-zinc-900/20' : 'bg-transparent'
+                      }`}
+                    >
+                      <td className="px-4 py-3 sticky left-0 bg-zinc-900/80 backdrop-blur-sm">
+                        <div className="font-medium text-white">{item.crop}</div>
+                        <div className="text-xs text-zinc-500">{item.cropKannada}</div>
+                      </td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.bangalore}</td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.tumkur}</td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.mysore}</td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.hubli}</td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.dharwad}</td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.belgaum}</td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.davangere}</td>
+                      <td className="px-4 py-3 text-center text-zinc-300">₹{item.shimoga}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex justify-center">
+                          {getTrendIcon(item.trend)}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="mt-6 bg-zinc-900/30 rounded-lg p-4 border border-zinc-800">
-            <p className="text-sm text-zinc-400 text-center">
-              Market prices are indicative and updated daily. Actual prices may vary by location and quality.
+          <div className="mt-3 bg-zinc-900/30 rounded-lg p-3 border border-zinc-800">
+            <p className="text-xs text-zinc-400 text-center">
+              Market prices are indicative and updated daily. Actual prices may vary by location and quality. Click column headers to sort.
             </p>
           </div>
         </section>
 
         <section>
-          <div className="mb-8">
-            <h2 className="text-4xl font-bold text-white mb-2">ಹವಾಮಾನ ಮಾಹಿತಿ</h2>
-            <p className="text-lg text-zinc-400">Weather Information</p>
+          <div className="mb-4">
+            <h2 className="text-3xl font-bold text-white mb-1">ಹವಾಮಾನ ಮಾಹಿತಿ</h2>
+            <p className="text-sm text-zinc-400">Weather Information for Key Districts</p>
           </div>
 
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-              <p className="text-zinc-400 mt-4">Loading weather data...</p>
-            </div>
-          ) : weatherData ? (
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-2xl p-8 border border-blue-800/50">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h3 className="text-3xl font-bold text-white mb-2">Karnataka</h3>
-                    <p className="text-zinc-300">{weatherData.description}</p>
-                  </div>
-                  <Cloud size={64} className="text-blue-400" />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-black/30 rounded-xl p-6">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <ThermometerSun className="text-orange-400" size={24} />
-                      <span className="text-zinc-400">ತಾಪಮಾನ</span>
-                    </div>
-                    <div className="text-4xl font-bold text-white mb-1">{weatherData.temp}°C</div>
-                    <p className="text-sm text-zinc-500">Temperature</p>
-                  </div>
-
-                  <div className="bg-black/30 rounded-xl p-6">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <Droplets className="text-blue-400" size={24} />
-                      <span className="text-zinc-400">ಮಳೆ ಸಾಧ್ಯತೆ</span>
-                    </div>
-                    <div className="text-4xl font-bold text-white mb-1">{weatherData.rainProb}%</div>
-                    <p className="text-sm text-zinc-500">Rain Probability</p>
-                  </div>
-
-                  <div className="bg-black/30 rounded-xl p-6">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <Droplets className="text-cyan-400" size={24} />
-                      <span className="text-zinc-400">ಆರ್ಡ್ರತೆ</span>
-                    </div>
-                    <div className="text-4xl font-bold text-white mb-1">{weatherData.humidity}%</div>
-                    <p className="text-sm text-zinc-500">Humidity</p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-4">3-Day Forecast</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {forecast.map((day, index) => (
-                    <div
+          <div className="bg-gradient-to-br from-blue-900/20 to-cyan-900/20 rounded-xl border border-blue-800/30 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-blue-900/30">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-zinc-300">
+                      District
+                      <div className="text-xs font-normal text-zinc-500">ಜಿಲ್ಲೆ</div>
+                    </th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
+                      Current Temp
+                      <div className="text-xs font-normal text-zinc-500">ತಾಪಮಾನ</div>
+                    </th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
+                      Condition
+                      <div className="text-xs font-normal text-zinc-500">ಸ್ಥಿತಿ</div>
+                    </th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
+                      Humidity
+                      <div className="text-xs font-normal text-zinc-500">ಆರ್ಡ್ರತೆ</div>
+                    </th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
+                      Wind Speed
+                      <div className="text-xs font-normal text-zinc-500">ಗಾಳಿ ವೇಗ</div>
+                    </th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
+                      Min/Max
+                      <div className="text-xs font-normal text-zinc-500">ಕನಿಷ್ಠ/ಗರಿಷ್ಠ</div>
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-zinc-300">
+                      Forecast
+                      <div className="text-xs font-normal text-zinc-500">ಮುನ್ಸೂಚನೆ</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {weatherData.map((district, index) => (
+                    <tr
                       key={index}
-                      className="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800"
+                      className={`border-t border-blue-800/20 hover:bg-blue-900/20 transition-colors ${
+                        index % 2 === 0 ? 'bg-blue-900/10' : 'bg-transparent'
+                      }`}
                     >
-                      <h4 className="text-lg font-bold text-white mb-3">{day.date}</h4>
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <div className="text-3xl font-bold text-white">{day.temp}°C</div>
-                          <p className="text-sm text-zinc-400 mt-1">{day.description}</p>
+                      <td className="px-4 py-4">
+                        <div className="font-semibold text-white">{district.district}</div>
+                        <div className="text-xs text-zinc-500">{district.districtKannada}</div>
+                      </td>
+                      <td className="px-4 py-4 text-center">
+                        <div className="flex items-center justify-center space-x-1">
+                          <ThermometerSun className="text-orange-400" size={16} />
+                          <span className="text-xl font-bold text-white">{district.temp}°C</span>
                         </div>
-                        <Cloud className="text-zinc-500" size={40} />
-                      </div>
-                      <div className="pt-3 border-t border-zinc-800">
-                        <div className="flex items-center space-x-2">
-                          <Droplets className="text-blue-400" size={16} />
-                          <span className="text-sm text-zinc-400">Rain: {day.rainProb}%</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center justify-center space-x-2">
+                          <district.icon className="text-blue-400" size={20} />
+                          <span className="text-zinc-300 text-sm">{district.condition}</span>
                         </div>
-                      </div>
-                    </div>
+                      </td>
+                      <td className="px-4 py-4 text-center text-zinc-300">{district.humidity}%</td>
+                      <td className="px-4 py-4 text-center">
+                        <div className="flex items-center justify-center space-x-1">
+                          <Wind className="text-cyan-400" size={14} />
+                          <span className="text-zinc-300">{district.windSpeed} km/h</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-center">
+                        <div className="text-blue-300">{district.minTemp}°</div>
+                        <div className="text-orange-300">{district.maxTemp}°</div>
+                      </td>
+                      <td className="px-4 py-4 text-zinc-300 text-sm">{district.forecast}</td>
+                    </tr>
                   ))}
-                </div>
-              </div>
+                </tbody>
+              </table>
             </div>
-          ) : (
-            <div className="text-center py-12 text-zinc-400">
-              <p>Unable to load weather data. Please try again later.</p>
-            </div>
-          )}
+          </div>
 
-          <div className="mt-6 bg-zinc-900/30 rounded-lg p-4 border border-zinc-800">
-            <p className="text-sm text-zinc-400 text-center">
-              Weather information is updated regularly. Data shown is for general reference.
+          <div className="mt-3 bg-zinc-900/30 rounded-lg p-3 border border-zinc-800">
+            <p className="text-xs text-zinc-400 text-center">
+              Weather information is updated regularly. Data shown is for general reference and may vary throughout the day.
             </p>
           </div>
         </section>
