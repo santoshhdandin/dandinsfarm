@@ -75,11 +75,11 @@ const crops: Crop[] = [
     harvestSeason: 'Year-round with peak season December-March',
     icon: '🍈',
     images: [
-      '/images/gallery/Guava/1.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Guava/2.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Guava/3.jpeg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Guava/4.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Guava/5.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Guava/1.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Guava/2.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Guava/3.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Guava/4.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Guava/5.jpg?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {

@@ -4,9 +4,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 pt-16">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="mb-8 inline-block">
-          <div className="w-32 h-32 mx-auto mb-6">
-            <img src="/images/Final.png" alt="Dandin's Farm Logo" className="w-full h-full object-contain" />
+        <div className="mb-2 inline-block">
+          <div className="w-48 h-48 mx-auto mb-0">
+            <img src="/images/Final.png" alt="Dandin's Farm Logo" className="w-full h-full object-contain hover:scale-110 transition-transform duration-300 cursor-pointer" />
           </div>
         </div>
 
@@ -33,14 +33,14 @@ export default function HomePage() {
         </div>
 
 
-        <div className="flex items-center justify-center space-x-2 text-zinc-500 mb-6">
+        <div className="flex items-center justify-center space-x-2 text-zinc-500 mb-2">
           <MapPin size={20} />
           <span>Haveri, Karnataka, India</span>
         </div>
 		
-        <div className="max-w-9xl mx-auto mb-6">
+        <div className="max-w-9xl mx-auto mb-4">
           <p className="text-lg text-zinc-150 leading-relaxed mb-4">
-            We grow premium fruits and crops using 100% organic, chemical-free methods. Blending traditional wisdom with modern sustainable practices, we nurture the soil, respect nature, and deliver fresh. Every fruit and crop from our farm is grown with care, ensuring the highest quality and nutritional value for our community.
+            Welcome to our organic paradise, we grow premium fruits and crops using 100% organic, chemical-free methods. Blending traditional wisdom with modern sustainable practices, we nurture the soil, respect nature & deliver fresh. Every fruit and crop from our farm is grown with care, ensuring the highest quality and nutritional value.
           </p>
         </div>
 

@@ -305,12 +305,7 @@ export default function GalleryPage() {
           </Link>
         </div>
 
-        <div className="mt-8 text-center text-zinc-500 text-sm">
-          <p>
-            Note: Actual farm photos will be added soon. These placeholders represent the types of
-            images that will showcase our beautiful organic farm.
-          </p>
-        </div>
+
       </div>
     </div>
   );
