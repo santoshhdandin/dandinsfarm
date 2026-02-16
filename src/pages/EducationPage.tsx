@@ -155,6 +155,80 @@ export default function EducationPage() {
             </a>
           </div>
         </div>
+
+        <div className="mt-12">
+          <h2 className="text-3xl font-bold text-white mb-8">Featured Videos About Dandin's Farm</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a
+              href="https://www.youtube.com/watch?v=0UGucDqQHn0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-zinc-900/50 rounded-xl overflow-hidden border border-zinc-800 hover:border-green-600 transition-all"
+            >
+              <div className="relative aspect-video overflow-hidden">
+                <img
+                  src="https://img.youtube.com/vi/0UGucDqQHn0/maxresdefault.jpg"
+                  alt="Dandin's Farm Video 1"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                  <div className="w-16 h-16 bg-red-600/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <PlayCircle className="text-white ml-1" size={32} />
+                  </div>
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="text-zinc-400 text-sm group-hover:text-green-400 transition-colors">Watch on YouTube</p>
+              </div>
+            </a>
+
+            <a
+              href="https://www.youtube.com/watch?v=yKImxKYNX2g"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-zinc-900/50 rounded-xl overflow-hidden border border-zinc-800 hover:border-green-600 transition-all"
+            >
+              <div className="relative aspect-video overflow-hidden">
+                <img
+                  src="https://img.youtube.com/vi/yKImxKYNX2g/maxresdefault.jpg"
+                  alt="Dandin's Farm Video 2"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                  <div className="w-16 h-16 bg-red-600/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <PlayCircle className="text-white ml-1" size={32} />
+                  </div>
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="text-zinc-400 text-sm group-hover:text-green-400 transition-colors">Watch on YouTube</p>
+              </div>
+            </a>
+
+            <a
+              href="https://www.youtube.com/watch?v=BCfQ3zhGvWY&t=1s"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-zinc-900/50 rounded-xl overflow-hidden border border-zinc-800 hover:border-green-600 transition-all"
+            >
+              <div className="relative aspect-video overflow-hidden">
+                <img
+                  src="https://img.youtube.com/vi/BCfQ3zhGvWY/maxresdefault.jpg"
+                  alt="Dandin's Farm Video 3"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                  <div className="w-16 h-16 bg-red-600/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <PlayCircle className="text-white ml-1" size={32} />
+                  </div>
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="text-zinc-400 text-sm group-hover:text-green-400 transition-colors">Watch on YouTube</p>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -5,8 +5,8 @@ export default function HomePage() {
     <div className="min-h-screen flex items-center justify-center px-4 pt-16">
       <div className="max-w-4xl mx-auto text-center">
         <div className="mb-8 inline-block">
-          <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-600 to-green-900 flex items-center justify-center">
-            <Leaf size={64} className="text-white" />
+          <div className="w-32 h-32 mx-auto mb-6">
+            <img src="/images/Final.png" alt="Dandin's Farm Logo" className="w-full h-full object-contain" />
           </div>
         </div>
 
