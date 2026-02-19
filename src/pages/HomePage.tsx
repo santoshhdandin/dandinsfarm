@@ -12,23 +12,35 @@ export default function HomePage() {
     const leafContainer = document.getElementById('falling-leaves-container');
     if (!leafContainer) return;
 
+    // Clear existing leaves if React re-runs the effect during development
+    leafContainer.innerHTML = '';
+
+    // A beautiful organic green color palette
+    const colors = ['#4CAF50', '#2E7D32', '#81C784', '#A5D6A7', '#66BB6A'];
+
     for (let i = 0; i < 18; i++) {
       const leaf = document.createElement('div');
       leaf.className = 'falling-leaf';
       leaf.innerHTML = leafSVG;
 
-      const size = Math.random() * 40 + 20;
+      // Increased base size for better visibility and hover interaction
+      const size = Math.random() * 60 + 35; 
       const leftPosition = Math.random() * 100;
       const duration = Math.random() * 7 + 8;
       const delay = Math.random() * 3;
       const swayAmount = Math.random() * 100 + 50;
+      
+      // Select a random green and calculate a random blur for depth
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      const blurAmount = Math.random() > 0.7 ? (Math.random() * 2 + 1) : 0;
 
       leaf.style.setProperty('--size', `${size}px`);
       leaf.style.setProperty('--left', `${leftPosition}%`);
       leaf.style.setProperty('--duration', `${duration}s`);
       leaf.style.setProperty('--delay', `${delay}s`);
       leaf.style.setProperty('--sway', `${swayAmount}px`);
-      leaf.style.setProperty('--rotation', `${Math.random() * 360}deg`);
+      leaf.style.setProperty('--blur', `${blurAmount}px`);
+      leaf.style.color = randomColor;
 
       leafContainer.appendChild(leaf);
     }
@@ -39,14 +51,15 @@ export default function HomePage() {
       <style>{`
         @keyframes fallingLeaves {
           0% {
-            transform: translateY(-10vh) translateX(0) rotate(0deg);
+            transform: translateY(-10vh) translateX(0) rotate(0deg) rotateX(0deg) rotateY(0deg);
             opacity: 1;
           }
           50% {
-            opacity: 0.6;
+            opacity: 0.8;
           }
           100% {
-            transform: translateY(100vh) translateX(var(--sway)) rotate(720deg);
+            /* 3D tumbling: rotateX and rotateY */
+            transform: translateY(100vh) translateX(var(--sway)) rotate(720deg) rotateX(360deg) rotateY(720deg);
             opacity: 0;
           }
         }
@@ -57,7 +70,7 @@ export default function HomePage() {
           left: 0;
           width: 100%;
           height: 100vh;
-          pointer-events: none;
+          pointer-events: none; /* Keeps the container from blocking clicks */
           z-index: 5;
         }
 
@@ -67,17 +80,30 @@ export default function HomePage() {
           top: 0;
           width: var(--size);
           height: var(--size);
-          color: #4CAF50;
-          opacity: 0.5;
-          animation: fallingLeaves var(--duration) linear var(--delay) forwards;
+          opacity: 0.7;
+          filter: blur(var(--blur)); /* Depth of field */
+          animation: fallingLeaves var(--duration) linear var(--delay) infinite;
+          
+          /* Hover interaction enablers */
+          pointer-events: auto; 
+          cursor: pointer; 
         }
 
         .falling-leaf-svg {
           width: 100%;
           height: 100%;
+          transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+        }
+
+        /* Hover Zoom & Drop Shadow Effect */
+        .falling-leaf:hover .falling-leaf-svg {
+          transform: scale(1.6) rotate(15deg);
+          filter: drop-shadow(0px 10px 8px rgba(0,0,0,0.4));
         }
       `}</style>
+      
       <div id="falling-leaves-container"></div>
+      
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="mb-2 inline-block">
           <div className="w-48 h-48 mx-auto mb-0">
@@ -107,12 +133,11 @@ export default function HomePage() {
           </div>
         </div>
 
-
         <div className="flex items-center justify-center space-x-2 text-zinc-500 mb-2">
           <MapPin size={20} />
           <span>Haveri, Karnataka, India</span>
         </div>
-		
+        
         <div className="max-w-9xl mx-auto mb-4">
           <p className="text-lg text-zinc-150 leading-relaxed mb-4">
             Welcome to our organic paradise, we grow premium fruits and crops using 100% organic, chemical-free methods. Blending traditional wisdom with modern sustainable practices, we nurture the soil, respect nature & deliver fresh. Every fruit and crop from our farm is grown with care, ensuring the highest quality and nutritional value.
@@ -130,12 +155,10 @@ export default function HomePage() {
           </div>
         </div>
 
-
-
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-3xl mx-auto">
           {[
             { label: 'Acres', value: '6+' },
-			{ label: 'Plants', value: '2775+' },
+            { label: 'Plants', value: '2775+' },
             { label: 'Crop Varieties', value: '30+' },
             { label: 'Years Experience', value: '10+' },
             { label: 'Happy Customers', value: '100+' },
@@ -144,26 +167,13 @@ export default function HomePage() {
               key={stat.label}
               to="/our-farm-produce"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="bg-zinc-900/50 rounded-lg p-6 border border-zinc-800 hover:border-green-600 hover:bg-zinc-800/50 transition-all hover:scale-105 cursor-pointer"
+              className="bg-zinc-900/50 rounded-lg p-6 border border-zinc-800 hover:border-green-600 hover:bg-zinc-800/50 transition-all hover:scale-105 transition-transform duration-300 cursor-pointer"
             >
               <div className="text-2xl font-bold text-green-400 mb-2">{stat.value}</div>
               <div className="text-sm text-zinc-500">{stat.label}</div>
             </Link>
           ))}
         </div>
-
-        <div className="mt-12 pt-8 border-t border-zinc-800">
-          <div className="flex flex-col items-center justify-center space-y-2">
-            <a href='https://free-hit-counters.net/' className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">Visitor Counter</a>
-            <div dangerouslySetInnerHTML={{
-              __html: `
-                <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=d4d02367f23258575d4cfc7fd517bafa7a6b7eda'></script>
-                <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1496940/t/9"></script>
-              `
-            }} />
-          </div>
-        </div>
-
       </div>
     </div>
   );
