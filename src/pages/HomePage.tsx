@@ -1,31 +1,83 @@
 import { MapPin, Leaf, Sprout } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function HomePage() {
-  const [showRoots, setShowRoots] = useState(false);
-
   useEffect(() => {
-    setShowRoots(true);
-    const timer = setTimeout(() => {
-      setShowRoots(false);
-    }, 4500);
+    const leafSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="falling-leaf-svg">
+      <path d="M50 10 Q30 30 25 50 Q20 70 35 85 Q50 95 50 85 Q50 70 55 50 Q60 30 50 10" fill="currentColor" />
+      <path d="M50 30 Q45 45 50 60" stroke="currentColor" stroke-width="1" fill="none" opacity="0.6" />
+    </svg>`;
 
-    const interval = setInterval(() => {
-      setShowRoots(true);
-      setTimeout(() => {
-        setShowRoots(false);
-      }, 4500);
-    }, 15000);
+    const leafContainer = document.getElementById('falling-leaves-container');
+    if (!leafContainer) return;
 
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
+    for (let i = 0; i < 18; i++) {
+      const leaf = document.createElement('div');
+      leaf.className = 'falling-leaf';
+      leaf.innerHTML = leafSVG;
+
+      const size = Math.random() * 40 + 20;
+      const leftPosition = Math.random() * 100;
+      const duration = Math.random() * 7 + 8;
+      const delay = Math.random() * 3;
+      const swayAmount = Math.random() * 100 + 50;
+
+      leaf.style.setProperty('--size', `${size}px`);
+      leaf.style.setProperty('--left', `${leftPosition}%`);
+      leaf.style.setProperty('--duration', `${duration}s`);
+      leaf.style.setProperty('--delay', `${delay}s`);
+      leaf.style.setProperty('--sway', `${swayAmount}px`);
+      leaf.style.setProperty('--rotation', `${Math.random() * 360}deg`);
+
+      leafContainer.appendChild(leaf);
+    }
   }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 pt-16 relative overflow-hidden">
+      <style>{`
+        @keyframes fallingLeaves {
+          0% {
+            transform: translateY(-10vh) translateX(0) rotate(0deg);
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.6;
+          }
+          100% {
+            transform: translateY(100vh) translateX(var(--sway)) rotate(720deg);
+            opacity: 0;
+          }
+        }
+
+        #falling-leaves-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          pointer-events: none;
+          z-index: 5;
+        }
+
+        .falling-leaf {
+          position: absolute;
+          left: var(--left);
+          top: 0;
+          width: var(--size);
+          height: var(--size);
+          color: #4CAF50;
+          opacity: 0.5;
+          animation: fallingLeaves var(--duration) linear var(--delay) forwards;
+        }
+
+        .falling-leaf-svg {
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
+      <div id="falling-leaves-container"></div>
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="mb-2 inline-block">
           <div className="w-48 h-48 mx-auto mb-0">
@@ -53,168 +105,6 @@ export default function HomePage() {
             <Leaf size={20} className="text-green-400 animate-bounce" />
             <div className="h-1 w-12 bg-gradient-to-l from-transparent via-green-500 to-green-400 rounded-full"></div>
           </div>
-
-          {/* Animated Root Growth SVG */}
-          <svg
-            className={`absolute left-1/2 top-full -translate-x-1/2 pointer-events-none transition-opacity duration-1500 ${
-              showRoots ? 'opacity-40' : 'opacity-0'
-            }`}
-            style={{
-              width: '800px',
-              height: '600px',
-              marginTop: '10px',
-              filter: 'drop-shadow(0 0 8px #00ff88) drop-shadow(0 0 12px #00ff88)',
-            }}
-            viewBox="0 0 800 600"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <style>
-                {`
-                  @keyframes growRoot {
-                    from {
-                      stroke-dashoffset: 1000;
-                    }
-                    to {
-                      stroke-dashoffset: 0;
-                    }
-                  }
-                  .root-path {
-                    stroke: #00ff88;
-                    stroke-width: 2;
-                    fill: none;
-                    stroke-linecap: round;
-                    stroke-linejoin: round;
-                    stroke-dasharray: 1000;
-                    stroke-dashoffset: 1000;
-                  }
-                  .root-path.animate {
-                    animation: growRoot 3s ease-out forwards;
-                  }
-                  .root-path-thin {
-                    stroke-width: 1.5;
-                  }
-                  .root-path-thinner {
-                    stroke-width: 1;
-                  }
-                `}
-              </style>
-            </defs>
-
-            {/* Main central root */}
-            <path
-              className={`root-path ${showRoots ? 'animate' : ''}`}
-              d="M 400 0 Q 400 80, 400 150"
-              style={{ animationDelay: '0s' }}
-            />
-
-            {/* Left main branch */}
-            <path
-              className={`root-path ${showRoots ? 'animate' : ''}`}
-              d="M 400 150 Q 350 200, 320 280"
-              style={{ animationDelay: '0.3s' }}
-            />
-
-            {/* Left sub-branches */}
-            <path
-              className={`root-path root-path-thin ${showRoots ? 'animate' : ''}`}
-              d="M 320 280 Q 280 320, 250 380"
-              style={{ animationDelay: '0.6s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 250 380 Q 220 420, 200 470"
-              style={{ animationDelay: '0.9s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 320 280 Q 300 340, 280 400"
-              style={{ animationDelay: '0.8s' }}
-            />
-
-            {/* Right main branch */}
-            <path
-              className={`root-path ${showRoots ? 'animate' : ''}`}
-              d="M 400 150 Q 450 200, 480 280"
-              style={{ animationDelay: '0.3s' }}
-            />
-
-            {/* Right sub-branches */}
-            <path
-              className={`root-path root-path-thin ${showRoots ? 'animate' : ''}`}
-              d="M 480 280 Q 520 320, 550 380"
-              style={{ animationDelay: '0.6s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 550 380 Q 580 420, 600 470"
-              style={{ animationDelay: '0.9s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 480 280 Q 500 340, 520 400"
-              style={{ animationDelay: '0.8s' }}
-            />
-
-            {/* Center deep root */}
-            <path
-              className={`root-path ${showRoots ? 'animate' : ''}`}
-              d="M 400 150 Q 400 250, 400 350"
-              style={{ animationDelay: '0.4s' }}
-            />
-            <path
-              className={`root-path root-path-thin ${showRoots ? 'animate' : ''}`}
-              d="M 400 350 Q 395 420, 390 480"
-              style={{ animationDelay: '0.7s' }}
-            />
-
-            {/* Additional branching roots */}
-            <path
-              className={`root-path root-path-thin ${showRoots ? 'animate' : ''}`}
-              d="M 350 200 Q 320 240, 300 300"
-              style={{ animationDelay: '0.5s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 300 300 Q 270 350, 240 420"
-              style={{ animationDelay: '0.85s' }}
-            />
-
-            <path
-              className={`root-path root-path-thin ${showRoots ? 'animate' : ''}`}
-              d="M 450 200 Q 480 240, 500 300"
-              style={{ animationDelay: '0.5s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 500 300 Q 530 350, 560 420"
-              style={{ animationDelay: '0.85s' }}
-            />
-
-            {/* Far left spreading roots */}
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 250 380 Q 200 400, 160 440"
-              style={{ animationDelay: '1s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 200 470 Q 170 500, 140 540"
-              style={{ animationDelay: '1.1s' }}
-            />
-
-            {/* Far right spreading roots */}
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 550 380 Q 600 400, 640 440"
-              style={{ animationDelay: '1s' }}
-            />
-            <path
-              className={`root-path root-path-thinner ${showRoots ? 'animate' : ''}`}
-              d="M 600 470 Q 630 500, 660 540"
-              style={{ animationDelay: '1.1s' }}
-            />
-          </svg>
         </div>
 
 
