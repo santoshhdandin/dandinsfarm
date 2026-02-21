@@ -56,7 +56,7 @@ export default function ContactPage() {
   };
 
   // ==========================================
-  // 🎤 NATIVE AI RAITHA VOICE LOGIC
+  // 🎤 OPTIMIZED NATIVE VOICE LOGIC
   // ==========================================
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [voiceStatus, setVoiceStatus] = useState("Speak Live with AI Raitha");
@@ -73,18 +73,18 @@ export default function ContactPage() {
 
     const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert("Sorry, your browser does not support voice features. Try Chrome or Edge!");
+      alert("Browser not supported. Please use Chrome or Edge!");
       return;
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'en-IN'; 
+    recognition.lang = 'en-IN';
+    recognition.continuous = false; 
     recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
     recognitionRef.current = recognition;
 
     setIsVoiceActive(true);
-    setVoiceStatus("Listening... (Speak now)");
+    setVoiceStatus("Listening...");
 
     recognition.onresult = async (event: any) => {
       const userSpokenText = event.results[0][0].transcript;
@@ -99,34 +99,35 @@ export default function ContactPage() {
         });
         
         const data = await response.json();
-        const aiText = data.result || data.response;
+        const aiText = data.response || data.result;
 
         if (aiText && aiText !== 0 && aiText !== "0") {
           setVoiceStatus("Speaking...");
           const utterance = new SpeechSynthesisUtterance(aiText);
           utterance.lang = 'en-IN';
+          utterance.rate = 1.1; // Slightly faster for responsiveness
+
           utterance.onend = () => {
              if (isVoiceActive) {
-               setVoiceStatus("Listening... (Speak now)");
-               recognition.start();
+               setVoiceStatus("Listening...");
+               try { recognition.start(); } catch(e) {}
              }
           };
           window.speechSynthesis.speak(utterance);
         } else {
-          setVoiceStatus("Listening... (Speak now)");
-          recognition.start();
+          setVoiceStatus("Listening...");
+          try { recognition.start(); } catch(e) {}
         }
       } catch (error) {
-        console.error("Voice Error:", error);
         setVoiceStatus("Connection Error");
         setIsVoiceActive(false);
       }
     };
 
-    recognition.onerror = (event: any) => {
-      if (event.error !== 'no-speech') {
-        setIsVoiceActive(false);
-        setVoiceStatus("Speak Live with AI Raitha");
+    recognition.onend = () => {
+      // Re-trigger listening if the user stopped talking but the call is still active
+      if (isVoiceActive && voiceStatus === "Listening...") {
+        try { recognition.start(); } catch(e) {}
       }
     };
 
@@ -191,7 +192,7 @@ export default function ContactPage() {
                 <label className="block text-sm font-medium text-zinc-300 mb-2">Message *</label>
                 <textarea name="message" required value={formData.message} onChange={handleChange} className="w-full flex-grow min-h-[120px] px-4 py-3 bg-zinc-950/50 border border-green-800/30 rounded-lg text-white focus:border-green-400 outline-none resize-none" placeholder="How can we help?"/>
               </div>
-              <button type="submit" className="w-full bg-[#21c55e] hover:bg-[#16a34a] text-white py-4 rounded-xl font-bold transition-all shadow-[0_4px_15px_rgba(33,197,94,0.3)] mt-2">Send Message</button>
+              <button type="submit" className="w-full bg-[#21c55e] hover:bg-[#16a34a] text-white py-4 rounded-xl font-bold transition-all shadow-lg mt-2">Send Message</button>
             </form>
           </div>
 

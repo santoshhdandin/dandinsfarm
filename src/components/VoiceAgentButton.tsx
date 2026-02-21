@@ -1,4 +1,4 @@
-import { Mic, Loader2, Phone } from 'lucide-react';
+import { Mic } from 'lucide-react';
 import { useState, useRef } from 'react';
 
 export default function VoiceAgentButton() {
@@ -6,11 +6,7 @@ export default function VoiceAgentButton() {
   const [voiceStatus, setVoiceStatus] = useState("Speak Live with our AI Guide");
   const recognitionRef = useRef<any>(null);
 
-  // ==========================================
-  // 🎤 NATIVE AI RAITHA VOICE LOGIC
-  // ==========================================
   const toggleVoiceAgent = () => {
-    // If active, stop listening and speaking
     if (isVoiceActive) {
       if (recognitionRef.current) recognitionRef.current.stop();
       window.speechSynthesis.cancel();
@@ -19,17 +15,16 @@ export default function VoiceAgentButton() {
       return;
     }
 
-    // Initialize Browser Microphone (Web Speech API)
     const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert("Sorry, your browser does not support voice features. Try Chrome or Edge!");
+      alert("Browser not supported. Please use Chrome or Edge!");
       return;
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'en-IN'; // Indian English for better accent recognition
+    recognition.lang = 'en-IN';
+    recognition.continuous = false; 
     recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
     recognitionRef.current = recognition;
 
     setIsVoiceActive(true);
@@ -40,7 +35,6 @@ export default function VoiceAgentButton() {
       setVoiceStatus("Thinking...");
       
       try {
-        // Absolute URL to your Cloudflare Worker
         const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev/";
         const response = await fetch(workerUrl, {
           method: "POST",
@@ -49,26 +43,25 @@ export default function VoiceAgentButton() {
         });
         
         const data = await response.json();
-        
-        // Handle 'response' or 'result' field from your Lyzr V3 API
         const aiText = data.response || data.result;
 
-        if (aiText && aiText !== 0 && aiText !== "0") {
+        if (aiText) {
           setVoiceStatus("Speaking...");
-          
           const utterance = new SpeechSynthesisUtterance(aiText);
           utterance.lang = 'en-IN';
-          
+          utterance.rate = 1.1; 
+
           utterance.onend = () => {
-             if (isVoiceActive) {
-               setVoiceStatus("Listening...");
-               recognition.start(); // Auto-restart mic for conversation
-             }
+            if (isVoiceActive) {
+              setVoiceStatus("Listening...");
+              try { recognition.start(); } catch(e) {}
+            }
           };
+
           window.speechSynthesis.speak(utterance);
         } else {
           setVoiceStatus("Listening...");
-          recognition.start();
+          try { recognition.start(); } catch(e) {}
         }
       } catch (error) {
         console.error("Voice Error:", error);
@@ -77,10 +70,9 @@ export default function VoiceAgentButton() {
       }
     };
 
-    recognition.onerror = (event: any) => {
-      if (event.error !== 'no-speech') {
-        setIsVoiceActive(false);
-        setVoiceStatus("Speak Live with our AI Guide");
+    recognition.onend = () => {
+      if (isVoiceActive && voiceStatus === "Listening...") {
+        try { recognition.start(); } catch(e) {}
       }
     };
 
@@ -93,8 +85,8 @@ export default function VoiceAgentButton() {
         onClick={toggleVoiceAgent}
         className={`group relative flex items-center justify-center w-[60px] h-[60px] rounded-full transition-all duration-300 border-none ${
           isVoiceActive 
-            ? "bg-red-500 hover:bg-red-600 shadow-[0_4px_15px_rgba(239,68,68,0.5)]" 
-            : "bg-[#21c55e] hover:bg-[#16a34a] shadow-[0_4px_15px_rgba(33,197,94,0.3)]"
+            ? "bg-red-500 hover:bg-red-600 shadow-lg" 
+            : "bg-[#21c55e] hover:bg-[#16a34a] shadow-lg"
         }`}
       >
         <Mic 
@@ -104,11 +96,7 @@ export default function VoiceAgentButton() {
           size={28} 
           strokeWidth={2}
         />
-
-        {/* Hover Tooltip */}
-        <span 
-          className="absolute right-[75px] px-3 py-2 bg-zinc-900 text-white text-sm font-medium rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap border border-zinc-700 shadow-lg"
-        >
+        <span className="absolute right-[75px] px-3 py-2 bg-zinc-900 text-white text-sm font-medium rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap border border-zinc-700 shadow-lg">
           {voiceStatus}
         </span>
       </button>
