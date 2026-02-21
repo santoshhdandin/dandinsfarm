@@ -1,12 +1,6 @@
 import { Mail, Phone, MapPin, MessageCircle, Send, Mic } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import emailjs from "emailjs-com";
-
-declare global {
-  interface Window {
-    LyzrVoice: any;
-  }
-}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -61,46 +55,91 @@ export default function ContactPage() {
     }
   };
 
+  // ==========================================
+  // 🎤 NATIVE AI RAITHA VOICE LOGIC
+  // ==========================================
   const [isVoiceActive, setIsVoiceActive] = useState(false);
-  const [voiceStatus, setVoiceStatus] = useState("Speak Live with our Farm AI Voice Assistant");
-  const voiceAgentRef = useRef<any>(null);
+  const [voiceStatus, setVoiceStatus] = useState("Speak Live with AI Raitha");
+  const recognitionRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (!document.getElementById('lyzr-voice-sdk')) {
-      const script = document.createElement('script');
-      script.id = 'lyzr-voice-sdk';
-      script.src = 'https://unpkg.com/@lyzr/voice-sdk@latest/dist/index.js';
-      script.async = true;
-      document.body.appendChild(script);
-    }
-    return () => voiceAgentRef.current?.stop();
-  }, []);
-
-  const toggleVoiceAgent = async () => {
+  const toggleVoiceAgent = () => {
+    // If active, stop listening and speaking
     if (isVoiceActive) {
-      voiceAgentRef.current?.stop();
+      if (recognitionRef.current) recognitionRef.current.stop();
+      window.speechSynthesis.cancel();
       setIsVoiceActive(false);
-      setVoiceStatus("Speak Live with our Farm AI Voice Assistant");
+      setVoiceStatus("Speak Live with AI Raitha");
       return;
     }
-    setVoiceStatus("Connecting...");
-    try {
-      const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev"; 
-      const response = await fetch(workerUrl, { method: "POST" });
-      const data = await response.json();
-      if (data.token && window.LyzrVoice) {
-        const voiceAgent = new window.LyzrVoice({ token: data.token });
-        await voiceAgent.start();
-        voiceAgentRef.current = voiceAgent;
-        setIsVoiceActive(true);
-        setVoiceStatus("Call in Progress...");
-      } else {
-        alert("Connection failed. Call +91 96112 13993.");
-        setVoiceStatus("Speak Live with our Farm AI Voice Assistant");
-      }
-    } catch (error) {
-      setVoiceStatus("Speak Live with our Farm AI Voice Assistant");
+
+    // Initialize Browser Microphone (Web Speech API)
+    const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Sorry, your browser does not support voice features. Try Chrome or Edge!");
+      return;
     }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN'; // Indian English for better accent recognition
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognitionRef.current = recognition;
+
+    setIsVoiceActive(true);
+    setVoiceStatus("Listening... (Speak now)");
+
+    recognition.onresult = async (event: any) => {
+      const userSpokenText = event.results[0][0].transcript;
+      setVoiceStatus("Thinking...");
+      
+      try {
+        // Send spoken text to your Cloudflare Worker
+        const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev/";
+        const response = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userSpokenText })
+        });
+        
+        const data = await response.json();
+        
+        // Ensure Cloudflare returned Lyzr's response
+        if (data && data.response) {
+          setVoiceStatus("Speaking...");
+          
+          // Read the AI's response out loud
+          const utterance = new SpeechSynthesisUtterance(data.response);
+          utterance.lang = 'en-IN';
+          
+          utterance.onend = () => {
+             // Turn mic back on automatically after AI finishes talking
+             if (isVoiceActive) {
+               setVoiceStatus("Listening... (Speak now)");
+               recognition.start();
+             }
+          };
+          window.speechSynthesis.speak(utterance);
+        } else {
+          setVoiceStatus("Error: No reply");
+          setIsVoiceActive(false);
+        }
+      } catch (error) {
+        console.error("Voice Error:", error);
+        setVoiceStatus("Connection Error");
+        setIsVoiceActive(false);
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      if (event.error !== 'no-speech') {
+        setIsVoiceActive(false);
+        setVoiceStatus("Speak Live with AI Raitha");
+      }
+    };
+
+    // Start listening
+    recognition.start();
   };
 
   // Shared styling for ALL green cards globally
@@ -109,12 +148,33 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen px-4 py-24">
       <div className="max-w-7xl mx-auto">
+        
         <div className="mb-16 text-center md:text-left">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Contact Us</h1>
           <p className="text-xl text-zinc-400">Get in touch for inquiries about our organic produce</p>
         </div>
 
-
+        {/* ========================================== */}
+        {/* TOP CONTACT INFO                           */}
+        {/* ========================================== */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {[ 
+            { icon: <Phone size={24}/>, label: "Phone", val: "+91 96112 13993", sub: "Mon-Sat, 8 AM - 5 PM" },
+            { icon: <Mail size={24}/>, label: "Email", val: "dandinhm@gmail.com", sub: "Response within 24 hours" },
+            { icon: <MapPin size={24}/>, label: "Location", val: "Haveri, Karnataka, India", sub: "Visits by appointment" }
+          ].map((item, idx) => (
+            <div key={idx} className={cardStyle}>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div className="relative z-10">
+                <div className="bg-green-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-green-400">{item.icon}</div>
+                <h3 className="text-lg font-bold text-white mb-2">{item.label}</h3>
+                <p className="text-zinc-200">{item.val}</p>
+                <p className="text-zinc-400 text-sm mt-1">{item.sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+		
         {/* ========================================== */}
         {/* MIDDLE SECTION: PERFECTLY BALANCED SPLIT   */}
         {/* ========================================== */}
@@ -199,27 +259,6 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* ========================================== */}
-        {/* TOP CONTACT INFO                           */}
-        {/* ========================================== */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {[ 
-            { icon: <Phone size={24}/>, label: "Phone", val: "+91 96112 13993", sub: "Mon-Sat, 8 AM - 5 PM" },
-            { icon: <Mail size={24}/>, label: "Email", val: "dandinhm@gmail.com", sub: "Response within 24 hours" },
-            { icon: <MapPin size={24}/>, label: "Location", val: "Haveri, Karnataka, India", sub: "Visits by appointment" }
-          ].map((item, idx) => (
-            <div key={idx} className={cardStyle}>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/10 rounded-full blur-2xl pointer-events-none"></div>
-              <div className="relative z-10">
-                <div className="bg-green-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-green-400">{item.icon}</div>
-                <h3 className="text-lg font-bold text-white mb-2">{item.label}</h3>
-                <p className="text-zinc-200">{item.val}</p>
-                <p className="text-zinc-400 text-sm mt-1">{item.sub}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-		
         {/* ========================================== */}
         {/* BOTTOM SECTION: FULL WIDTH INFO CARDS      */}
         {/* ========================================== */}

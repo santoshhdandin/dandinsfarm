@@ -41,7 +41,7 @@ export default function VoiceAgentButton() {
     
     try {
       // ⚠️ REPLACE with your actual Cloudflare Worker URL
-      const workerUrl = "dandinsfarm-voiceagent.santoshhdandin.workers.dev"; 
+      const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev"; 
       
       const response = await fetch(workerUrl, { method: "POST" });
       const data = await response.json();
