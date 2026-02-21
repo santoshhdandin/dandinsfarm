@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import ChatWidget from './components/ChatWidget';
+import VoiceAgentButton from './components/VoiceAgentButton'; // 🎤 Import the new voice agent
 import HomePage from './pages/HomePage';
 import StoryPage from './pages/StoryPage';
 import MarketWeatherPage from './pages/MarketWeatherPage';
@@ -25,7 +26,11 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>
+      
+      {/* Global AI Widgets */}
       <ChatWidget />
+      <VoiceAgentButton /> {/* 🎤 The floating voice button */}
+      
     </div>
   );
 }
