@@ -1,97 +1,115 @@
-import { Mic, Loader2 } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
-
-declare global {
-  interface Window {
-    LyzrVoice: any;
-  }
-}
+import { Mic, Loader2, Phone } from 'lucide-react';
+import { useState, useRef } from 'react';
 
 export default function VoiceAgentButton() {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const voiceAgentRef = useRef<any>(null);
+  const [voiceStatus, setVoiceStatus] = useState("Speak Live with our AI Guide");
+  const recognitionRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (!document.getElementById('lyzr-voice-sdk')) {
-      const script = document.createElement('script');
-      script.id = 'lyzr-voice-sdk';
-      script.src = 'https://unpkg.com/@lyzr/voice-sdk@latest/dist/index.js';
-      script.async = true;
-      document.body.appendChild(script);
-    }
-    
-    return () => {
-      if (voiceAgentRef.current) {
-        voiceAgentRef.current.stop();
-      }
-    };
-  }, []);
-
-  const toggleVoiceAgent = async () => {
+  // ==========================================
+  // 🎤 NATIVE AI RAITHA VOICE LOGIC
+  // ==========================================
+  const toggleVoiceAgent = () => {
+    // If active, stop listening and speaking
     if (isVoiceActive) {
-      if (voiceAgentRef.current) {
-        voiceAgentRef.current.stop();
-      }
+      if (recognitionRef.current) recognitionRef.current.stop();
+      window.speechSynthesis.cancel();
       setIsVoiceActive(false);
+      setVoiceStatus("Speak Live with our AI Guide");
       return;
     }
 
-    setIsConnecting(true);
-    
-    try {
-      // ⚠️ REPLACE with your actual Cloudflare Worker URL
-      const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev"; 
-      
-      const response = await fetch(workerUrl, { method: "POST" });
-      const data = await response.json();
-
-      if (data.token && window.LyzrVoice) {
-        const voiceAgent = new window.LyzrVoice({ token: data.token });
-        await voiceAgent.start();
-        
-        voiceAgentRef.current = voiceAgent;
-        setIsVoiceActive(true);
-      } else {
-        alert("Could not connect. Please call us at +91 96112 13993.");
-      }
-    } catch (error) {
-      console.error("Connection failed:", error);
-      alert("Could not connect. Please call us at +91 96112 13993.");
-    } finally {
-      setIsConnecting(false);
+    // Initialize Browser Microphone (Web Speech API)
+    const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Sorry, your browser does not support voice features. Try Chrome or Edge!");
+      return;
     }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN'; // Indian English for better accent recognition
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognitionRef.current = recognition;
+
+    setIsVoiceActive(true);
+    setVoiceStatus("Listening...");
+
+    recognition.onresult = async (event: any) => {
+      const userSpokenText = event.results[0][0].transcript;
+      setVoiceStatus("Thinking...");
+      
+      try {
+        // Absolute URL to your Cloudflare Worker
+        const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev/";
+        const response = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userSpokenText })
+        });
+        
+        const data = await response.json();
+        
+        // Handle 'response' or 'result' field from your Lyzr V3 API
+        const aiText = data.response || data.result;
+
+        if (aiText && aiText !== 0 && aiText !== "0") {
+          setVoiceStatus("Speaking...");
+          
+          const utterance = new SpeechSynthesisUtterance(aiText);
+          utterance.lang = 'en-IN';
+          
+          utterance.onend = () => {
+             if (isVoiceActive) {
+               setVoiceStatus("Listening...");
+               recognition.start(); // Auto-restart mic for conversation
+             }
+          };
+          window.speechSynthesis.speak(utterance);
+        } else {
+          setVoiceStatus("Listening...");
+          recognition.start();
+        }
+      } catch (error) {
+        console.error("Voice Error:", error);
+        setIsVoiceActive(false);
+        setVoiceStatus("Speak Live with our AI Guide");
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      if (event.error !== 'no-speech') {
+        setIsVoiceActive(false);
+        setVoiceStatus("Speak Live with our AI Guide");
+      }
+    };
+
+    recognition.start();
   };
 
   return (
     <div className="fixed bottom-[100px] right-[24px] z-[9999] flex flex-col items-end">
       <button
         onClick={toggleVoiceAgent}
-        disabled={isConnecting}
-        // Matched the 60px size and vibrant green background to mimic the chat widget
         className={`group relative flex items-center justify-center w-[60px] h-[60px] rounded-full transition-all duration-300 border-none ${
           isVoiceActive 
             ? "bg-red-500 hover:bg-red-600 shadow-[0_4px_15px_rgba(239,68,68,0.5)]" 
             : "bg-[#21c55e] hover:bg-[#16a34a] shadow-[0_4px_15px_rgba(33,197,94,0.3)]"
         }`}
       >
-        {isConnecting ? (
-          <Loader2 className="text-white animate-spin" size={28} />
-        ) : (
-          <Mic 
-            className={`text-white transition-transform duration-300 ${
-              isVoiceActive ? "animate-pulse" : "group-hover:scale-110"
-            }`} 
-            size={28} 
-            strokeWidth={2}
-          />
-        )}
+        <Mic 
+          className={`text-white transition-transform duration-300 ${
+            isVoiceActive ? "animate-pulse" : "group-hover:scale-110"
+          }`} 
+          size={28} 
+          strokeWidth={2}
+        />
 
-        {/* Hover Tooltip (Pops out to the left) */}
+        {/* Hover Tooltip */}
         <span 
           className="absolute right-[75px] px-3 py-2 bg-zinc-900 text-white text-sm font-medium rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap border border-zinc-700 shadow-lg"
         >
-          {isConnecting ? "Connecting..." : isVoiceActive ? "End Call" : "Speak Live with our AI Guide"}
+          {voiceStatus}
         </span>
       </button>
     </div>

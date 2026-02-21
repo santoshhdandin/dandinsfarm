@@ -99,8 +99,6 @@ export default function ContactPage() {
         });
         
         const data = await response.json();
-        
-        // Handle both 'result' and 'response' fields from Lyzr
         const aiText = data.result || data.response;
 
         if (aiText && aiText !== 0 && aiText !== "0") {
@@ -165,10 +163,7 @@ export default function ContactPage() {
           ))}
         </div>
 
-        {/* MIDDLE SECTION: BALANCED SPLIT */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          
-          {/* LEFT: MESSAGE FORM */}
           <div className={`${cardStyle} flex flex-col h-full`}>
             <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl pointer-events-none"></div>
             <div className="flex items-center space-x-4 mb-8 relative z-10">
@@ -200,7 +195,6 @@ export default function ContactPage() {
             </form>
           </div>
 
-          {/* RIGHT: AI AGENTS */}
           <div className="space-y-8 flex flex-col">
             <div className={`${cardStyle} text-center`}>
               <div className="bg-zinc-900/80 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/50 shadow-lg text-green-400"><Mic size={36}/></div>
@@ -231,7 +225,6 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* BOTTOM SECTION: FULL WIDTH INFO CARDS */}
         <div className="space-y-6">
           <div className={`${cardStyle} lg:flex lg:items-center lg:space-x-12`}>
             <div className="relative z-10 lg:w-1/3 mb-6 lg:mb-0">
