@@ -6,17 +6,22 @@ export default function VoiceAgentButton() {
   const [voiceStatus, setVoiceStatus] = useState("Speak Live with our AI Guide");
   
   const recognitionRef = useRef<any>(null);
-  // NEW: Tracks if the AI is currently talking so the mic knows to stay muted
+  const utteranceRef = useRef<any>(null); // Prevents garbage collection bug
+  
+  // Refs ensure callbacks always read the absolute latest state
+  const isActiveRef = useRef<boolean>(false);
   const isSpeakingRef = useRef<boolean>(false);
 
   const toggleVoiceAgent = async () => {
     // 1. HANDLE DISCONNECT
-    if (isVoiceActive) {
+    if (isActiveRef.current) {
+      isActiveRef.current = false;
+      setIsVoiceActive(false);
+      isSpeakingRef.current = false;
+      
       if (recognitionRef.current) recognitionRef.current.stop();
       window.speechSynthesis.cancel();
-      setIsVoiceActive(false);
       setVoiceStatus("Speak Live with our AI Guide");
-      isSpeakingRef.current = false;
       return;
     }
 
@@ -26,6 +31,11 @@ export default function VoiceAgentButton() {
       alert("Browser not supported. Please use Chrome or Edge!");
       return;
     }
+
+    isActiveRef.current = true;
+    setIsVoiceActive(true);
+    isSpeakingRef.current = true; // Lock mic immediately for the greeting
+    setVoiceStatus("Connecting...");
 
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-IN';
@@ -39,18 +49,21 @@ export default function VoiceAgentButton() {
       if (!userSpokenText.trim()) return;
       
       setVoiceStatus("Thinking...");
-      await fetchAndSpeak(userSpokenText);
+      isSpeakingRef.current = true; // Lock mic while processing
+      recognition.stop(); // Explicitly pause listening
+      
+      await processAndSpeak(userSpokenText);
     };
 
     recognition.onend = () => {
-      // Auto-restart listening ONLY if the AI isn't speaking
-      if (isVoiceActive && !isSpeakingRef.current) {
+      // ONLY restart if the call is still active AND the AI is not speaking
+      if (isActiveRef.current && !isSpeakingRef.current) {
         try { recognition.start(); } catch(e) {}
       }
     };
 
     // 4. HELPER FUNCTION TO FETCH AND SPEAK
-    const fetchAndSpeak = async (textToSend: string) => {
+    const processAndSpeak = async (textToSend: string) => {
       try {
         const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev/";
         const response = await fetch(workerUrl, {
@@ -64,45 +77,50 @@ export default function VoiceAgentButton() {
 
         if (aiText && aiText !== 0 && aiText !== "0") {
           setVoiceStatus("Speaking...");
-          isSpeakingRef.current = true; // Lock the mic
           
           const utterance = new SpeechSynthesisUtterance(aiText);
+          utteranceRef.current = utterance; // Keep in memory so onend fires reliably
           utterance.lang = 'en-IN';
           utterance.rate = 1.1; 
 
-          utterance.onend = () => {
-            isSpeakingRef.current = false; // Unlock the mic
-            if (isVoiceActive) {
+          const unlockMic = () => {
+            if (isActiveRef.current) {
+              isSpeakingRef.current = false; 
               setVoiceStatus("Listening...");
               try { recognition.start(); } catch(e) {}
             }
           };
 
+          utterance.onend = unlockMic;
+          utterance.onerror = unlockMic; // Unlock mic even if TTS fails
+
           window.speechSynthesis.speak(utterance);
         } else {
-          setVoiceStatus("Listening...");
-          try { recognition.start(); } catch(e) {}
+          // If no text returned, unlock and listen again
+          if (isActiveRef.current) {
+             isSpeakingRef.current = false;
+             setVoiceStatus("Listening...");
+             try { recognition.start(); } catch(e) {}
+          }
         }
       } catch (error) {
         console.error("Voice Error:", error);
-        setVoiceStatus("Connection Error");
-        setTimeout(() => {
-          if (isVoiceActive) {
-            setVoiceStatus("Listening...");
-            isSpeakingRef.current = false;
-            try { recognition.start(); } catch(e) {}
-          }
-        }, 2000);
+        if (isActiveRef.current) {
+          setVoiceStatus("Connection Error");
+          setTimeout(() => {
+            if (isActiveRef.current) {
+              isSpeakingRef.current = false;
+              setVoiceStatus("Listening...");
+              try { recognition.start(); } catch(e) {}
+            }
+          }, 2000);
+        }
       }
     };
 
     // 5. START THE CALL & TRIGGER AI GREETING
-    setIsVoiceActive(true);
-    isSpeakingRef.current = true; // Lock mic while fetching greeting
-    setVoiceStatus("Connecting...");
-    
     // Hidden prompt to force the AI to speak first
-    await fetchAndSpeak("Hello! I just connected to the voice call. Please introduce yourself briefly.");
+    await processAndSpeak("Hello! I just connected to the voice call. Please introduce yourself briefly.");
   };
 
   return (

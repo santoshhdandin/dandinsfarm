@@ -62,25 +62,33 @@ export default function ContactPage() {
   const [voiceStatus, setVoiceStatus] = useState("Speak Live with AI Raitha");
   
   const recognitionRef = useRef<any>(null);
+  const utteranceRef = useRef<any>(null);
+  
+  const isActiveRef = useRef<boolean>(false);
   const isSpeakingRef = useRef<boolean>(false);
 
   const toggleVoiceAgent = async () => {
-    // 1. HANDLE DISCONNECT
-    if (isVoiceActive) {
+    if (isActiveRef.current) {
+      isActiveRef.current = false;
+      setIsVoiceActive(false);
+      isSpeakingRef.current = false;
+      
       if (recognitionRef.current) recognitionRef.current.stop();
       window.speechSynthesis.cancel();
-      setIsVoiceActive(false);
       setVoiceStatus("Speak Live with AI Raitha");
-      isSpeakingRef.current = false;
       return;
     }
 
-    // 2. INITIALIZE SPEECH RECOGNITION
     const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("Browser not supported. Please use Chrome or Edge!");
       return;
     }
+
+    isActiveRef.current = true;
+    setIsVoiceActive(true);
+    isSpeakingRef.current = true; 
+    setVoiceStatus("Connecting...");
 
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-IN';
@@ -88,24 +96,24 @@ export default function ContactPage() {
     recognition.interimResults = false;
     recognitionRef.current = recognition;
 
-    // 3. SET UP RECOGNITION HANDLERS
     recognition.onresult = async (event: any) => {
       const userSpokenText = event.results[0][0].transcript;
       if (!userSpokenText.trim()) return;
       
       setVoiceStatus("Thinking...");
-      await fetchAndSpeak(userSpokenText);
+      isSpeakingRef.current = true;
+      recognition.stop(); 
+      
+      await processAndSpeak(userSpokenText);
     };
 
     recognition.onend = () => {
-      // Auto-restart listening if the user paused but the AI isn't talking
-      if (isVoiceActive && !isSpeakingRef.current) {
+      if (isActiveRef.current && !isSpeakingRef.current) {
         try { recognition.start(); } catch(e) {}
       }
     };
 
-    // 4. HELPER FUNCTION TO FETCH AND SPEAK
-    const fetchAndSpeak = async (textToSend: string) => {
+    const processAndSpeak = async (textToSend: string) => {
       try {
         const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev/";
         const response = await fetch(workerUrl, {
@@ -119,43 +127,46 @@ export default function ContactPage() {
 
         if (aiText && aiText !== 0 && aiText !== "0") {
           setVoiceStatus("Speaking...");
-          isSpeakingRef.current = true; // Lock the mic
           
           const utterance = new SpeechSynthesisUtterance(aiText);
+          utteranceRef.current = utterance; 
           utterance.lang = 'en-IN';
           utterance.rate = 1.1;
 
-          utterance.onend = () => {
-             isSpeakingRef.current = false; // Unlock the mic
-             if (isVoiceActive) {
-               setVoiceStatus("Listening...");
-               try { recognition.start(); } catch(e) {}
-             }
+          const unlockMic = () => {
+            if (isActiveRef.current) {
+              isSpeakingRef.current = false; 
+              setVoiceStatus("Listening...");
+              try { recognition.start(); } catch(e) {}
+            }
           };
+
+          utterance.onend = unlockMic;
+          utterance.onerror = unlockMic; 
 
           window.speechSynthesis.speak(utterance);
         } else {
-          setVoiceStatus("Listening...");
-          try { recognition.start(); } catch(e) {}
+          if (isActiveRef.current) {
+             isSpeakingRef.current = false;
+             setVoiceStatus("Listening...");
+             try { recognition.start(); } catch(e) {}
+          }
         }
       } catch (error) {
-        setVoiceStatus("Connection Error");
-        setTimeout(() => {
-          if (isVoiceActive) {
-            setVoiceStatus("Listening...");
-            isSpeakingRef.current = false;
-            try { recognition.start(); } catch(e) {}
-          }
-        }, 2000);
+        if (isActiveRef.current) {
+          setVoiceStatus("Connection Error");
+          setTimeout(() => {
+            if (isActiveRef.current) {
+              isSpeakingRef.current = false;
+              setVoiceStatus("Listening...");
+              try { recognition.start(); } catch(e) {}
+            }
+          }, 2000);
+        }
       }
     };
 
-    // 5. START THE CALL & TRIGGER AI GREETING
-    setIsVoiceActive(true);
-    isSpeakingRef.current = true; // Lock mic while fetching greeting
-    setVoiceStatus("Connecting...");
-    
-    await fetchAndSpeak("Hello! I just connected to the voice call. Please introduce yourself briefly.");
+    await processAndSpeak("Hello! I just connected to the voice call. Please introduce yourself briefly.");
   };
 
   const cardStyle = "bg-gradient-to-br from-green-900/40 to-emerald-900/10 rounded-2xl p-8 border border-green-500/30 shadow-[0_0_20px_rgba(76,175,80,0.15)] relative overflow-hidden";
