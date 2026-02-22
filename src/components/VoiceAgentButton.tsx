@@ -4,17 +4,23 @@ import { useState, useRef } from 'react';
 export default function VoiceAgentButton() {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [voiceStatus, setVoiceStatus] = useState("Speak Live with our AI Guide");
+  
   const recognitionRef = useRef<any>(null);
+  // NEW: Tracks if the AI is currently talking so the mic knows to stay muted
+  const isSpeakingRef = useRef<boolean>(false);
 
-  const toggleVoiceAgent = () => {
+  const toggleVoiceAgent = async () => {
+    // 1. HANDLE DISCONNECT
     if (isVoiceActive) {
       if (recognitionRef.current) recognitionRef.current.stop();
       window.speechSynthesis.cancel();
       setIsVoiceActive(false);
       setVoiceStatus("Speak Live with our AI Guide");
+      isSpeakingRef.current = false;
       return;
     }
 
+    // 2. INITIALIZE SPEECH RECOGNITION
     const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("Browser not supported. Please use Chrome or Edge!");
@@ -27,31 +33,45 @@ export default function VoiceAgentButton() {
     recognition.interimResults = false;
     recognitionRef.current = recognition;
 
-    setIsVoiceActive(true);
-    setVoiceStatus("Listening...");
-
+    // 3. SET UP RECOGNITION HANDLERS
     recognition.onresult = async (event: any) => {
       const userSpokenText = event.results[0][0].transcript;
-      setVoiceStatus("Thinking...");
+      if (!userSpokenText.trim()) return;
       
+      setVoiceStatus("Thinking...");
+      await fetchAndSpeak(userSpokenText);
+    };
+
+    recognition.onend = () => {
+      // Auto-restart listening ONLY if the AI isn't speaking
+      if (isVoiceActive && !isSpeakingRef.current) {
+        try { recognition.start(); } catch(e) {}
+      }
+    };
+
+    // 4. HELPER FUNCTION TO FETCH AND SPEAK
+    const fetchAndSpeak = async (textToSend: string) => {
       try {
         const workerUrl = "https://dandinsfarm-voiceagent.santoshhdandin.workers.dev/";
         const response = await fetch(workerUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userSpokenText })
+          body: JSON.stringify({ message: textToSend })
         });
         
         const data = await response.json();
         const aiText = data.response || data.result;
 
-        if (aiText) {
+        if (aiText && aiText !== 0 && aiText !== "0") {
           setVoiceStatus("Speaking...");
+          isSpeakingRef.current = true; // Lock the mic
+          
           const utterance = new SpeechSynthesisUtterance(aiText);
           utterance.lang = 'en-IN';
           utterance.rate = 1.1; 
 
           utterance.onend = () => {
+            isSpeakingRef.current = false; // Unlock the mic
             if (isVoiceActive) {
               setVoiceStatus("Listening...");
               try { recognition.start(); } catch(e) {}
@@ -65,18 +85,24 @@ export default function VoiceAgentButton() {
         }
       } catch (error) {
         console.error("Voice Error:", error);
-        setIsVoiceActive(false);
-        setVoiceStatus("Speak Live with our AI Guide");
+        setVoiceStatus("Connection Error");
+        setTimeout(() => {
+          if (isVoiceActive) {
+            setVoiceStatus("Listening...");
+            isSpeakingRef.current = false;
+            try { recognition.start(); } catch(e) {}
+          }
+        }, 2000);
       }
     };
 
-    recognition.onend = () => {
-      if (isVoiceActive && voiceStatus === "Listening...") {
-        try { recognition.start(); } catch(e) {}
-      }
-    };
-
-    recognition.start();
+    // 5. START THE CALL & TRIGGER AI GREETING
+    setIsVoiceActive(true);
+    isSpeakingRef.current = true; // Lock mic while fetching greeting
+    setVoiceStatus("Connecting...");
+    
+    // Hidden prompt to force the AI to speak first
+    await fetchAndSpeak("Hello! I just connected to the voice call. Please introduce yourself briefly.");
   };
 
   return (
