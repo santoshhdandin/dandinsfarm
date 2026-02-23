@@ -26,14 +26,28 @@ export default function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-zinc-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          
+          {/* ========================================== */}
+          {/* LOGO & BRAND NAME SECTION                    */}
+          {/* ========================================== */}
           <Link
             to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-xl font-bold hover:text-green-400 transition-colors"
+            className="flex items-center space-x-3 group"
           >
-            Dandin's Farm
+            <img 
+              src="/images/Final.png" /* Change to .jpg if your file is a JPEG */
+              alt="Dandin's Farm Logo" 
+              className="w-10 h-10 object-contain rounded-full border border-zinc-800 group-hover:border-green-400 transition-colors bg-white" 
+            />
+            <span className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
+              Dandin's Farm
+            </span>
           </Link>
 
+          {/* ========================================== */}
+          {/* DESKTOP NAVIGATION                           */}
+          {/* ========================================== */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
@@ -52,6 +66,9 @@ export default function Navigation() {
             <SocialLinks />
           </div>
 
+          {/* ========================================== */}
+          {/* MOBILE MENU BUTTON                           */}
+          {/* ========================================== */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden text-zinc-400 hover:text-white"
@@ -61,6 +78,9 @@ export default function Navigation() {
         </div>
       </div>
 
+      {/* ========================================== */}
+      {/* MOBILE NAVIGATION DROPDOWN                   */}
+      {/* ========================================== */}
       {isOpen && (
         <div className="md:hidden bg-black/95 border-t border-zinc-800">
           <div className="px-4 py-4 space-y-3">
