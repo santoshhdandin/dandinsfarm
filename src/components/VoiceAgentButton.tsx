@@ -120,7 +120,7 @@ export default function VoiceAgentButton() {
 
     // 5. START THE CALL & TRIGGER AI GREETING
     // Hidden prompt to force the AI to speak first
-    await processAndSpeak("Hello! I just connected to the voice call. Please introduce yourself briefly.");
+    await processAndSpeak("Namaskara! Welcome to Dandin's Farm. I am your virtual farm assistant. To help you best today, could I please get your name, phonenumber and the reason for your call?");
   };
 
   return (

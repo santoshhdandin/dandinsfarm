@@ -166,7 +166,7 @@ export default function ContactPage() {
       }
     };
 
-    await processAndSpeak("Hello! I just connected to the voice call. Please introduce yourself briefly.");
+    await processAndSpeak("Namaskara! Welcome to Dandin's Farm. I am your virtual farm assistant. To help you best today, could I please get your name, phonenumber and the reason for your call?.");
   };
 
   const cardStyle = "bg-gradient-to-br from-green-900/40 to-emerald-900/10 rounded-2xl p-8 border border-green-500/30 shadow-[0_0_20px_rgba(76,175,80,0.15)] relative overflow-hidden";

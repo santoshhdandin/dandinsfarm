@@ -97,8 +97,8 @@ const crops: Crop[] = [
       '/images/gallery/Jamun/1.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Jamun/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Jamun/3.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Jamun/4.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Jamun/5.jpg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Jamun/4.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Jamun/5.png?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
@@ -115,8 +115,8 @@ const crops: Crop[] = [
     images: [
       '/images/gallery/Papaya/1.jpeg?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Papaya/2.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Papaya/3.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Papaya/4.jpg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Papaya/3.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Papaya/4.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Papaya/5.jpg?auto=compress&cs=tinysrgb&w=800',
     ],
   },
@@ -133,10 +133,10 @@ const crops: Crop[] = [
     icon: '🍌',
     images: [
       '/images/gallery/Banana/1.jpeg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Banana/2.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Banana/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Banana/3.jpeg?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Banana/4.jpeg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Banana/5.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Banana/5.png?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
@@ -211,8 +211,8 @@ const crops: Crop[] = [
       '/images/gallery/Mango/1.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Mango/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Mango/3.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Mango/4.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Mango/5.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Mango/4.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Mango/5.jpeg?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
@@ -458,8 +458,8 @@ const crops: Crop[] = [
       '/images/gallery/Arecanut/1.jpeg?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Arecanut/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Arecanut/3.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Arecanut/4.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Arecanut/5.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Arecanut/4.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Arecanut/5.jpeg?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
