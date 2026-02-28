@@ -1,5 +1,6 @@
 import { TrendingUp, TrendingDown, Minus, Cloud, CloudRain, Sun, Wind, ThermometerSun } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface MarketPrice {
   crop: string;
@@ -29,6 +30,9 @@ interface WeatherDistrict {
 }
 
 export default function MarketWeatherPage() {
+  const { t, i18n } = useTranslation();
+  const isKn = i18n.language === 'kn';
+
   const [marketData] = useState<MarketPrice[]>([
     { crop: 'Tomato', cropKannada: 'ಟೊಮೇಟೋ', bangalore: '45', tumkur: '42', mysore: '48', hubli: '40', dharwad: '43', belgaum: '46', davangere: '44', shimoga: '41', trend: 'up' },
     { crop: 'Banana', cropKannada: 'ಬಾಳೆಹಣ್ಣು', bangalore: '35', tumkur: '33', mysore: '36', hubli: '34', dharwad: '35', belgaum: '37', davangere: '35', shimoga: '34', trend: 'stable' },
@@ -123,18 +127,18 @@ export default function MarketWeatherPage() {
     <div className="min-h-screen px-4 py-24">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-          ಮಾರುಕಟ್ಟೆ & ಹವಾಮಾನ
+          {t('marketWeather.title')}
         </h1>
-        <p className="text-lg text-zinc-400 mb-8">Karnataka Market & Weather</p>
+        <p className="text-lg text-zinc-400 mb-8">{t('marketWeather.subtitle')}</p>
 
         <section className="mb-12">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold text-white mb-1">ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು</h2>
-              <p className="text-sm text-zinc-400">Market Prices (₹ per kg/quintal)</p>
+              <h2 className="text-3xl font-bold text-white mb-1">{t('marketWeather.market.title')}</h2>
+              <p className="text-sm text-zinc-400">{t('marketWeather.market.subtitle')}</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-zinc-500">Last Updated</p>
+              <p className="text-xs text-zinc-500">{t('marketWeather.market.lastUpdated')}</p>
               <p className="text-sm text-zinc-400">{lastUpdated}</p>
             </div>
           </div>
@@ -148,31 +152,28 @@ export default function MarketWeatherPage() {
                       onClick={() => handleSort('crop')}
                       className="px-4 py-3 text-left text-sm font-semibold text-zinc-300 cursor-pointer hover:bg-zinc-700/50 transition-colors sticky left-0 bg-zinc-800/50 backdrop-blur-sm"
                     >
-                      Crop Name
-                      <div className="text-xs font-normal text-zinc-500">ಬೆಳೆ ಹೆಸರು</div>
+                      {t('marketWeather.market.headers.cropName')}
                     </th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Bangalore<div className="text-xs font-normal text-zinc-500">ಬೆಂಗಳೂರು</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Tumkur<div className="text-xs font-normal text-zinc-500">ತುಮಕೂರು</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Mysore<div className="text-xs font-normal text-zinc-500">ಮೈಸೂರು</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Hubli<div className="text-xs font-normal text-zinc-500">ಹುಬ್ಬಳ್ಳಿ</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Dharwad<div className="text-xs font-normal text-zinc-500">ಧಾರವಾಡ</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Belgaum<div className="text-xs font-normal text-zinc-500">ಬೆಳಗಾವಿ</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Davangere<div className="text-xs font-normal text-zinc-500">ದಾವಣಗೆರೆ</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Shimoga<div className="text-xs font-normal text-zinc-500">ಶಿವಮೊಗ್ಗ</div></th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">Trend</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.bangalore')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.tumkur')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.mysore')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.hubli')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.dharwad')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.belgaum')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.davangere')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.shimoga')}</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">{t('marketWeather.market.headers.trend')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {sortedMarketData.map((item, index) => (
                     <tr
                       key={index}
-                      className={`border-t border-zinc-800 hover:bg-zinc-800/30 transition-colors ${
-                        index % 2 === 0 ? 'bg-zinc-900/20' : 'bg-transparent'
-                      }`}
+                      className={`border-t border-zinc-800 hover:bg-zinc-800/30 transition-colors ${index % 2 === 0 ? 'bg-zinc-900/20' : 'bg-transparent'
+                        }`}
                     >
                       <td className="px-4 py-3 sticky left-0 bg-zinc-900/80 backdrop-blur-sm">
-                        <div className="font-medium text-white">{item.crop}</div>
-                        <div className="text-xs text-zinc-500">{item.cropKannada}</div>
+                        <div className="font-medium text-white">{isKn ? item.cropKannada : item.crop}</div>
                       </td>
                       <td className="px-4 py-3 text-center text-zinc-300">₹{item.bangalore}</td>
                       <td className="px-4 py-3 text-center text-zinc-300">₹{item.tumkur}</td>
@@ -196,15 +197,15 @@ export default function MarketWeatherPage() {
 
           <div className="mt-3 bg-zinc-900/30 rounded-lg p-3 border border-zinc-800">
             <p className="text-xs text-zinc-400 text-center">
-              Market prices are indicative and updated daily. Actual prices may vary by location and quality. Click column headers to sort.
+              {t('marketWeather.market.note')}
             </p>
           </div>
         </section>
 
         <section>
           <div className="mb-4">
-            <h2 className="text-3xl font-bold text-white mb-1">ಹವಾಮಾನ ಮಾಹಿತಿ</h2>
-            <p className="text-sm text-zinc-400">Weather Information for Key Districts</p>
+            <h2 className="text-3xl font-bold text-white mb-1">{t('marketWeather.weather.title')}</h2>
+            <p className="text-sm text-zinc-400">{t('marketWeather.weather.subtitle')}</p>
           </div>
 
           <div className="bg-gradient-to-br from-blue-900/20 to-cyan-900/20 rounded-xl border border-blue-800/30 overflow-hidden">
@@ -213,32 +214,25 @@ export default function MarketWeatherPage() {
                 <thead className="bg-blue-900/30">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-zinc-300">
-                      District
-                      <div className="text-xs font-normal text-zinc-500">ಜಿಲ್ಲೆ</div>
+                      {t('marketWeather.weather.headers.district')}
                     </th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
-                      Current Temp
-                      <div className="text-xs font-normal text-zinc-500">ತಾಪಮಾನ</div>
+                      {t('marketWeather.weather.headers.temp')}
                     </th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
-                      Condition
-                      <div className="text-xs font-normal text-zinc-500">ಸ್ಥಿತಿ</div>
+                      {t('marketWeather.weather.headers.condition')}
                     </th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
-                      Humidity
-                      <div className="text-xs font-normal text-zinc-500">ಆರ್ಡ್ರತೆ</div>
+                      {t('marketWeather.weather.headers.humidity')}
                     </th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
-                      Wind Speed
-                      <div className="text-xs font-normal text-zinc-500">ಗಾಳಿ ವೇಗ</div>
+                      {t('marketWeather.weather.headers.windSpeed')}
                     </th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-zinc-300">
-                      Min/Max
-                      <div className="text-xs font-normal text-zinc-500">ಕನಿಷ್ಠ/ಗರಿಷ್ಠ</div>
+                      {t('marketWeather.weather.headers.minMax')}
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-zinc-300">
-                      Forecast
-                      <div className="text-xs font-normal text-zinc-500">ಮುನ್ಸೂಚನೆ</div>
+                      {t('marketWeather.weather.headers.forecast')}
                     </th>
                   </tr>
                 </thead>
@@ -246,13 +240,11 @@ export default function MarketWeatherPage() {
                   {weatherData.map((district, index) => (
                     <tr
                       key={index}
-                      className={`border-t border-blue-800/20 hover:bg-blue-900/20 transition-colors ${
-                        index % 2 === 0 ? 'bg-blue-900/10' : 'bg-transparent'
-                      }`}
+                      className={`border-t border-blue-800/20 hover:bg-blue-900/20 transition-colors ${index % 2 === 0 ? 'bg-blue-900/10' : 'bg-transparent'
+                        }`}
                     >
                       <td className="px-4 py-4">
-                        <div className="font-semibold text-white">{district.district}</div>
-                        <div className="text-xs text-zinc-500">{district.districtKannada}</div>
+                        <div className="font-semibold text-white">{isKn ? district.districtKannada : district.district}</div>
                       </td>
                       <td className="px-4 py-4 text-center">
                         <div className="flex items-center justify-center space-x-1">
@@ -263,7 +255,9 @@ export default function MarketWeatherPage() {
                       <td className="px-4 py-4">
                         <div className="flex items-center justify-center space-x-2">
                           <district.icon className="text-blue-400" size={20} />
-                          <span className="text-zinc-300 text-sm">{district.condition}</span>
+                          <span className="text-zinc-300 text-sm">
+                            {t(`marketWeather.weather.conditions.${district.condition}`)}
+                          </span>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-center text-zinc-300">{district.humidity}%</td>
@@ -277,7 +271,9 @@ export default function MarketWeatherPage() {
                         <div className="text-blue-300">{district.minTemp}°</div>
                         <div className="text-orange-300">{district.maxTemp}°</div>
                       </td>
-                      <td className="px-4 py-4 text-zinc-300 text-sm">{district.forecast}</td>
+                      <td className="px-4 py-4 text-zinc-300 text-sm">
+                        {t(`marketWeather.weather.forecasts.${district.forecast}`)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -287,7 +283,7 @@ export default function MarketWeatherPage() {
 
           <div className="mt-3 bg-zinc-900/30 rounded-lg p-3 border border-zinc-800">
             <p className="text-xs text-zinc-400 text-center">
-              Weather information is updated regularly. Data shown is for general reference and may vary throughout the day.
+              {t('marketWeather.weather.note')}
             </p>
           </div>
         </section>

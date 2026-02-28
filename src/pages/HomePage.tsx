@@ -1,8 +1,10 @@
 import { MapPin, Leaf, Sprout } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function HomePage() {
+  const { t } = useTranslation();
   useEffect(() => {
     const leafSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="falling-leaf-svg">
       <path d="M50 10 Q30 30 25 50 Q20 70 35 85 Q50 95 50 85 Q50 70 55 50 Q60 30 50 10" fill="currentColor" />
@@ -24,12 +26,12 @@ export default function HomePage() {
       leaf.innerHTML = leafSVG;
 
       // Increased base size for better visibility and hover interaction
-      const size = Math.random() * 60 + 35; 
+      const size = Math.random() * 60 + 35;
       const leftPosition = Math.random() * 100;
       const duration = Math.random() * 7 + 8;
       const delay = Math.random() * 3;
       const swayAmount = Math.random() * 100 + 50;
-      
+
       // Select a random green and calculate a random blur for depth
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       const blurAmount = Math.random() > 0.7 ? (Math.random() * 2 + 1) : 0;
@@ -101,9 +103,9 @@ export default function HomePage() {
           filter: drop-shadow(0px 10px 8px rgba(0,0,0,0.4));
         }
       `}</style>
-      
+
       <div id="falling-leaves-container"></div>
-      
+
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="mb-2 inline-block">
           <div className="w-48 h-48 mx-auto mb-0">
@@ -119,12 +121,12 @@ export default function HomePage() {
               Dandin's Farm
             </h1>
           </div>
-          
+
           {/* Main title with enhanced gradient and shadow */}
           <h1 className="relative text-6xl md:text-8xl font-black mb-2 bg-gradient-to-r from-green-300 via-emerald-400 to-green-500 bg-clip-text text-transparent drop-shadow-2xl tracking-tight hover:scale-105 transition-transform duration-300">
             Dandin's Farm
           </h1>
-          
+
           {/* Decorative underline */}
           <div className="flex items-center justify-center gap-2 mt-4">
             <div className="h-1 w-12 bg-gradient-to-r from-transparent via-green-500 to-green-400 rounded-full"></div>
@@ -135,33 +137,33 @@ export default function HomePage() {
 
         <div className="flex items-center justify-center space-x-2 text-zinc-500 mb-2">
           <MapPin size={20} />
-          <span>Haveri, Karnataka, India</span>
+          <span>{t('home.location')}</span>
         </div>
-        
+
         <div className="max-w-9xl mx-auto mb-4">
           <p className="text-lg text-zinc-150 leading-relaxed mb-4">
-            Welcome to our organic paradise, we grow premium fruits and crops using 100% organic, chemical-free methods. Blending traditional wisdom with modern sustainable practices, we nurture the soil, respect nature & deliver fresh. Every fruit and crop from our farm is grown with care, ensuring the highest quality and nutritional value.
+            {t('home.description')}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-6 mb-6">
           <div className="flex items-center space-x-2 text-green-400">
             <Sprout size={24} />
-            <span className="text-xl font-semibold">100% Organic</span>
+            <span className="text-xl font-semibold">{t('home.organic')}</span>
           </div>
           <div className="flex items-center space-x-2 text-green-400">
             <Leaf size={24} />
-            <span className="text-xl font-semibold">Sustainable Farming</span>
+            <span className="text-xl font-semibold">{t('home.sustainable')}</span>
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-3xl mx-auto">
           {[
-            { label: 'Acres', value: '6+' },
-            { label: 'Plants', value: '2775+' },
-            { label: 'Crop Varieties', value: '30+' },
-            { label: 'Years Experience', value: '10+' },
-            { label: 'Happy Customers', value: '100+' },
+            { label: t('home.stats.acres'), value: '6+' },
+            { label: t('home.stats.plants'), value: '2775+' },
+            { label: t('home.stats.crops'), value: '30+' },
+            { label: t('home.stats.experience'), value: '10+' },
+            { label: t('home.stats.customers'), value: '100+' },
           ].map((stat) => (
             <Link
               key={stat.label}
