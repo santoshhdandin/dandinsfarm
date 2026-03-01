@@ -1,0 +1,1 @@
+const fs = require('fs'); const content = fs.readFileSync('src/pages/CropsPage.tsx', 'utf8'); const matches = content.match(/id:\s*'([^']+)'/g); console.log(matches.map(m => m.replace(/id:\s*'/,'').replace(/'/,'')).join(', '));

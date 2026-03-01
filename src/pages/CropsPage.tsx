@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Crop {
   id: string;
@@ -97,8 +98,8 @@ const crops: Crop[] = [
       '/images/gallery/Jamun/1.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Jamun/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Jamun/3.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Jamun/4.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Jamun/5.jpg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Jamun/4.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Jamun/5.png?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
@@ -115,8 +116,8 @@ const crops: Crop[] = [
     images: [
       '/images/gallery/Papaya/1.jpeg?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Papaya/2.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Papaya/3.jpg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Papaya/4.jpg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Papaya/3.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Papaya/4.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Papaya/5.jpg?auto=compress&cs=tinysrgb&w=800',
     ],
   },
@@ -133,10 +134,10 @@ const crops: Crop[] = [
     icon: '🍌',
     images: [
       '/images/gallery/Banana/1.jpeg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Banana/2.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Banana/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Banana/3.jpeg?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Banana/4.jpeg?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Banana/5.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Banana/5.png?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
@@ -211,8 +212,8 @@ const crops: Crop[] = [
       '/images/gallery/Mango/1.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Mango/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Mango/3.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Mango/4.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Mango/5.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Mango/4.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Mango/5.jpeg?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
@@ -458,8 +459,8 @@ const crops: Crop[] = [
       '/images/gallery/Arecanut/1.jpeg?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Arecanut/2.png?auto=compress&cs=tinysrgb&w=800',
       '/images/gallery/Arecanut/3.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Arecanut/4.png?auto=compress&cs=tinysrgb&w=800',
-      '/images/gallery/Arecanut/5.png?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Arecanut/4.jpeg?auto=compress&cs=tinysrgb&w=800',
+      '/images/gallery/Arecanut/5.jpeg?auto=compress&cs=tinysrgb&w=800',
     ],
   },
   {
@@ -749,8 +750,8 @@ const crops: Crop[] = [
     ],
   },
 ];
-
 export default function CropsPage() {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null);
 
@@ -763,7 +764,7 @@ export default function CropsPage() {
             className="flex items-center space-x-2 text-zinc-400 hover:text-green-400 transition-colors mb-8"
           >
             <ArrowLeft size={20} />
-            <span>Back to all produce</span>
+            <span>{t('crops.backProduce')}</span>
           </button>
 
           <div className="bg-zinc-900/50 rounded-2xl overflow-hidden border border-zinc-800">
@@ -783,18 +784,20 @@ export default function CropsPage() {
                 </div>
                 <div className="h-12 w-px bg-zinc-800" />
                 <div className="text-left max-w-xs">
-                  <div className="text-sm text-zinc-500 mb-1">Harvest Season</div>
+                  <div className="text-sm text-zinc-500 mb-1">{t('crops.harvestSeason')}</div>
                   <div className="text-white">{selectedCrop.harvestSeason}</div>
                 </div>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-white mb-4">About This Produce</h2>
-                <p className="text-zinc-300 leading-relaxed">{selectedCrop.description}</p>
+                <h2 className="text-2xl font-bold text-white mb-4">{t('crops.about')}</h2>
+                <p className="text-zinc-300 leading-relaxed">
+                  {t(`cropsData.${selectedCrop.id}.description`, { defaultValue: selectedCrop.description })}
+                </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-white mb-4">Photos</h2>
+                <h2 className="text-2xl font-bold text-white mb-4">{t('crops.photos')}</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                   {selectedCrop.images.map((image, index) => (
                     <div
@@ -812,9 +815,9 @@ export default function CropsPage() {
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-white mb-4">Health Benefits</h2>
+                <h2 className="text-2xl font-bold text-white mb-4">{t('crops.benefits')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {selectedCrop.benefits.map((benefit, index) => (
+                  {(t(`cropsData.${selectedCrop.id}.benefits`, { returnObjects: true, defaultValue: selectedCrop.benefits }) as string[]).map((benefit, index) => (
                     <div
                       key={index}
                       className="flex items-start space-x-3 bg-black/30 rounded-lg p-4"
@@ -828,10 +831,10 @@ export default function CropsPage() {
 
               <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-xl p-6 border border-green-800/50">
                 <h3 className="text-lg font-bold text-white mb-2">
-                  Interested in bulk orders?
+                  {t('crops.bulk')}
                 </h3>
                 <p className="text-zinc-300 mb-4">
-                  Contact us for fresh, organic {selectedCrop.name.toLowerCase()} directly from our farm.
+                  {t('crops.bulkDesc', { name: selectedCrop.name.split(' (')[0] })}
                 </p>
                 <Link
                   to="/contact"
@@ -841,7 +844,7 @@ export default function CropsPage() {
                   }}
                   className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
                 >
-                  Contact Us
+                  {t('crops.contact')}
                 </Link>
               </div>
             </div>
@@ -863,7 +866,7 @@ export default function CropsPage() {
             className="flex items-center space-x-2 text-zinc-400 hover:text-green-400 transition-colors mb-8"
           >
             <ArrowLeft size={20} />
-            <span>Back to categories</span>
+            <span>{t('crops.backCategories')}</span>
           </button>
 
           {category && (
@@ -872,9 +875,9 @@ export default function CropsPage() {
                 <div className="text-6xl">{category.icon}</div>
                 <div>
                   <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-                    {category.name}
+                    {t(`crops.categories.${category.id}.name`)}
                   </h1>
-                  <p className="text-xl text-zinc-400">{category.description}</p>
+                  <p className="text-xl text-zinc-400">{t(`crops.categories.${category.id}.desc`)}</p>
                 </div>
               </div>
             </div>
@@ -903,7 +906,7 @@ export default function CropsPage() {
                       <span>{crop.quantity} {crop.unit}</span>
                     </div>
                     <span className="text-green-400 group-hover:translate-x-1 transition-transform">
-                      More →
+                      {t('crops.more')}
                     </span>
                   </div>
                 </div>
@@ -919,10 +922,10 @@ export default function CropsPage() {
     <div className="min-h-screen px-4 py-24">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-          Our Farm Produce
+          {t('crops.title')}
         </h1>
         <p className="text-xl text-zinc-400 mb-12">
-          Discover our organic produce, grown with care and dedication
+          {t('crops.subtitle')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
@@ -940,16 +943,16 @@ export default function CropsPage() {
 
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-green-400 transition-colors">
-                    {category.name}
+                    {t(`crops.categories.${category.id}.name`)}
                   </h3>
-                  <p className="text-zinc-400 text-sm mb-4">{category.description}</p>
+                  <p className="text-zinc-400 text-sm mb-4">{t(`crops.categories.${category.id}.desc`)}</p>
 
                   <div className="flex items-center justify-between text-sm">
                     <div className="text-zinc-500">
-                      {categoryCount} items
+                      {t('crops.items', { count: categoryCount })}
                     </div>
                     <span className="text-green-400 group-hover:translate-x-1 transition-transform">
-                      Explore →
+                      {t('crops.explore')}
                     </span>
                   </div>
                 </div>
@@ -959,12 +962,9 @@ export default function CropsPage() {
         </div>
 
         <div className="mt-12 bg-zinc-900/50 rounded-2xl p-8 border border-zinc-800">
-          <h2 className="text-2xl font-bold text-white mb-4">100% Organic Certified</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">{t('crops.certifiedTitle')}</h2>
           <p className="text-zinc-300 leading-relaxed">
-            All our produce is grown using complete organic methods. We use only natural fertilizers,
-            traditional pest control methods, and sustainable water management practices. Every fruit,
-            vegetable, and product from our farm is chemical-free, ensuring the highest quality and
-            nutritional value for our customers.
+            {t('crops.certifiedDesc')}
           </p>
         </div>
       </div>

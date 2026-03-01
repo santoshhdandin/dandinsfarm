@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Mic, Paperclip, Smile } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 //const CHAT_BACKEND = "https://lyzr-agnt-production.up.railway.app/chat";
 const CHAT_BACKEND = "https://plain-tree-e3d0.santoshhdandin.workers.dev/";
@@ -12,11 +13,12 @@ interface Message {
 }
 
 export default function ChatWidget() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: 'Hello! Welcome to Dandin\'s Farm. How can I help YOU today ?',
+      text: t('chatWidget.welcome'),
       sender: 'ai',
       timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
     },
@@ -40,55 +42,55 @@ export default function ChatWidget() {
     }
   }, [isOpen]);
 
-const handleSend = async () => {
-  if (!inputValue.trim()) return;
+  const handleSend = async () => {
+    if (!inputValue.trim()) return;
 
-  const newMessage: Message = {
-    id: messages.length + 1,
-    text: inputValue,
-    sender: 'user',
-    timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-  };
+    const newMessage: Message = {
+      id: messages.length + 1,
+      text: inputValue,
+      sender: 'user',
+      timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+    };
 
-  setMessages([...messages, newMessage]);
-  const messageToSend = inputValue;
-  setInputValue('');
-  setIsTyping(true);
+    setMessages([...messages, newMessage]);
+    const messageToSend = inputValue;
+    setInputValue('');
+    setIsTyping(true);
 
-  try {
-    const res = await fetch(CHAT_BACKEND, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: messageToSend })
-    });
-    
-    if (!res.ok) {
-      throw new Error('Failed to get response');
+    try {
+      const res = await fetch(CHAT_BACKEND, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: messageToSend })
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      const data = await res.json();
+
+      const aiResponse: Message = {
+        id: messages.length + 2,
+        text: data.reply || t('chatWidget.respondError'),
+        sender: 'ai',
+        timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setMessages((prev) => [...prev, aiResponse]);
+    } catch (err) {
+      console.error('Chat error:', err);
+      const errorMessage: Message = {
+        id: messages.length + 2,
+        text: t('chatWidget.connectError'),
+        sender: 'ai',
+        timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
     }
-    
-    const data = await res.json();
-    
-    const aiResponse: Message = {
-      id: messages.length + 2,
-      text: data.reply || "I'm having trouble responding right now. Please try again.",
-      sender: 'ai',
-      timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-    };
-    
-    setMessages((prev) => [...prev, aiResponse]);
-  } catch (err) {
-    console.error('Chat error:', err);
-    const errorMessage: Message = {
-      id: messages.length + 2,
-      text: "Sorry, I'm having trouble connecting. Please try again or contact us directly.",
-      sender: 'ai',
-      timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-    };
-    setMessages((prev) => [...prev, errorMessage]);
-  } finally {
-    setIsTyping(false);
-  }
-};
+  };
 
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -117,8 +119,8 @@ const handleSend = async () => {
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-green-600 animate-pulse" />
               </div>
               <div>
-                <h3 className="font-bold text-white">Dandin's Farm Assistant</h3>
-                <p className="text-xs text-green-100">Online</p>
+                <h3 className="font-bold text-white">{t('chatWidget.title')}</h3>
+                <p className="text-xs text-green-100">{t('chatWidget.online')}</p>
               </div>
             </div>
             <button
@@ -134,16 +136,14 @@ const handleSend = async () => {
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex items-end space-x-2 animate-[slideUp_0.3s_ease-out] ${
-                  message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                }`}
+                className={`flex items-end space-x-2 animate-[slideUp_0.3s_ease-out] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                  }`}
               >
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    message.sender === 'user'
+                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
                       ? 'bg-gradient-to-br from-green-500 to-emerald-600'
                       : 'bg-zinc-800 border border-zinc-700'
-                  }`}
+                    }`}
                 >
                   {message.sender === 'user' ? (
                     <span className="text-white text-sm font-semibold">U</span>
@@ -153,17 +153,15 @@ const handleSend = async () => {
                 </div>
                 <div className="flex flex-col max-w-[75%]">
                   <div
-                    className={`px-4 py-2.5 rounded-2xl ${
-                      message.sender === 'user'
+                    className={`px-4 py-2.5 rounded-2xl ${message.sender === 'user'
                         ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-br-sm'
                         : 'bg-zinc-800/80 backdrop-blur-sm border border-zinc-700/50 text-zinc-100 rounded-bl-sm'
-                    } shadow-lg`}
+                      } shadow-lg`}
                   >
                     <p className="text-sm leading-relaxed">{message.text}</p>
                   </div>
-                  <span className={`text-xs text-zinc-500 mt-1 px-1 ${
-                    message.sender === 'user' ? 'text-right' : 'text-left'
-                  }`}>
+                  <span className={`text-xs text-zinc-500 mt-1 px-1 ${message.sender === 'user' ? 'text-right' : 'text-left'
+                    }`}>
                     {message.timestamp}
                   </span>
                 </div>
@@ -196,7 +194,7 @@ const handleSend = async () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Type your message..."
+                  placeholder={t('chatWidget.placeholder')}
                   className="w-full bg-zinc-800/80 backdrop-blur-sm border border-zinc-700/50 rounded-xl px-4 py-3 pr-24 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 transition-all"
                   maxLength={500}
                 />
@@ -224,11 +222,10 @@ const handleSend = async () => {
               <button
                 onClick={handleSend}
                 disabled={!inputValue.trim()}
-                className={`bg-gradient-to-r from-green-600 to-emerald-600 p-3 rounded-xl transition-all ${
-                  inputValue.trim()
+                className={`bg-gradient-to-r from-green-600 to-emerald-600 p-3 rounded-xl transition-all ${inputValue.trim()
                     ? 'hover:from-green-500 hover:to-emerald-500 hover:scale-105 shadow-lg shadow-green-500/20'
                     : 'opacity-50 cursor-not-allowed'
-                }`}
+                  }`}
                 aria-label="Send message"
               >
                 <Send size={20} className="text-white" />
@@ -245,9 +242,8 @@ const handleSend = async () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 ${
-          isOpen ? 'scale-0' : 'scale-100'
-        }`}
+        className={`fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 ${isOpen ? 'scale-0' : 'scale-100'
+          }`}
         style={{
           background: 'linear-gradient(135deg, #22c55e 0%, #14b8a6 100%)',
           boxShadow: '0 10px 40px rgba(34, 197, 94, 0.4)',

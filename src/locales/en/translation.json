@@ -1,0 +1,306 @@
+{
+    "nav": {
+        "links": {
+            "home": "Home",
+            "story": "Story",
+            "crops": "Crops",
+            "gallery": "Gallery",
+            "education": "Education",
+            "marketWeather": "Market & Weather"
+        },
+        "contact": "Contact",
+        "language": "EN"
+    },
+    "home": {
+        "location": "Haveri, Karnataka, India",
+        "description": "Welcome to our organic paradise, we grow premium fruits and crops using 100% organic, chemical-free methods. Blending traditional wisdom with modern sustainable practices, we nurture the soil, respect nature & deliver fresh. Every fruit and crop from our farm is grown with care, ensuring the highest quality and nutritional value.",
+        "organic": "100% Organic",
+        "sustainable": "Sustainable Farming",
+        "stats": {
+            "acres": "Acres",
+            "plants": "Plants",
+            "crops": "Crop Varieties",
+            "experience": "Years Experience",
+            "customers": "Happy Customers"
+        }
+    },
+    "story": {
+        "title": "Our Story",
+        "subtitle": "The Journey of Dandin's Farm",
+        "section1": {
+            "title": "The Beginning",
+            "sub": "Where it all started",
+            "p1": "Dandin's Farm began as a vision to bring back traditional organic farming practices to our community. What started as a small family farm with just a few acres has grown into a thriving organic paradise. Our journey began with a simple belief - that food should be grown naturally, respecting the soil, the environment, and the health of our consumers."
+        },
+        "section2": {
+            "title": "Our Philosophy",
+            "sub": "What drives us",
+            "p1": "We believe in working with nature, not against it. Our farming practices are rooted in the understanding that healthy soil produces healthy plants, which in turn provide nutritious food. We use only organic compost, natural pest control methods, and traditional farming wisdom passed down through generations.",
+            "p2": "Every decision we make on the farm is guided by three principles: sustainability, quality, and community. We're not just growing crops; we're cultivating a better future for our land and our children."
+        },
+        "section3": {
+            "title": "The Transformation",
+            "sub": "Building something special",
+            "p1": "Over the years, we've transformed barren land into a lush, productive organic farm. We've planted hundreds of fruit trees, established natural water conservation systems, and created a balanced ecosystem where beneficial insects and birds help us maintain the health of our crops. Each season brings new learning, new challenges, and new rewards."
+        },
+        "section4": {
+            "title": "Looking Forward",
+            "sub": "Our vision for the future",
+            "p1": "Today, Dandin's Farm stands as a model of sustainable organic agriculture. We're proud to supply fresh, chemical-free produce to families who value health and quality. But our journey doesn't stop here.",
+            "p2": "We're committed to expanding our knowledge, sharing our experience with other farmers through our YouTube channel, and inspiring more people to embrace organic farming. We're building not just a farm, but a movement towards healthier food and a healthier planet."
+        },
+        "section5": {
+            "title": "Join Our Journey",
+            "p1": "We invite you to be part of our story. Whether you're looking for fresh organic produce, want to learn about organic farming, or simply want to support sustainable agriculture, Dandin's Farm welcomes you. Together, we can create a healthier, more sustainable future."
+        }
+    },
+    "marketWeather": {
+        "title": "Karnataka Market & Weather",
+        "subtitle": "Live updates from across Karnataka",
+        "market": {
+            "title": "Market Prices",
+            "subtitle": "Market Prices (₹ per kg/quintal)",
+            "lastUpdated": "Last Updated",
+            "headers": {
+                "cropName": "Crop Name",
+                "bangalore": "Bangalore",
+                "tumkur": "Tumkur",
+                "mysore": "Mysore",
+                "hubli": "Hubli",
+                "dharwad": "Dharwad",
+                "belgaum": "Belgaum",
+                "davangere": "Davangere",
+                "shimoga": "Shimoga",
+                "trend": "Trend"
+            },
+            "note": "Market prices are indicative and updated daily. Actual prices may vary by location and quality. Click column headers to sort."
+        },
+        "weather": {
+            "title": "Weather Information",
+            "subtitle": "Weather Information for Key Districts",
+            "headers": {
+                "district": "District",
+                "temp": "Current Temp",
+                "condition": "Condition",
+                "humidity": "Humidity",
+                "windSpeed": "Wind Speed",
+                "minMax": "Min/Max",
+                "forecast": "Forecast"
+            },
+            "note": "Weather information is updated regularly. Data shown is for general reference and may vary throughout the day.",
+            "conditions": {
+                "Partly Cloudy": "Partly Cloudy",
+                "Sunny": "Sunny",
+                "Light Rain": "Light Rain"
+            },
+            "forecasts": {
+                "Slight chance of rain": "Slight chance of rain",
+                "Clear skies expected": "Clear skies expected",
+                "Rain likely today": "Rain likely today"
+            }
+        }
+    },
+    "crops": {
+        "title": "Our Farm Produce",
+        "subtitle": "Discover our organic produce, grown with care and dedication",
+        "backProduce": "Back to all produce",
+        "backCategories": "Back to categories",
+        "harvestSeason": "Harvest Season",
+        "about": "About This Produce",
+        "photos": "Photos",
+        "benefits": "Health Benefits",
+        "bulk": "Interested in bulk orders?",
+        "bulkDesc": "Contact us for fresh, organic {{name}} directly from our farm.",
+        "contact": "Contact Us",
+        "items": "{{count}} items",
+        "explore": "Explore →",
+        "more": "More →",
+        "certifiedTitle": "100% Organic Certified",
+        "certifiedDesc": "All our produce is grown using complete organic methods. We use only natural fertilizers, traditional pest control methods, and sustainable water management practices. Every fruit, vegetable, and product from our farm is chemical-free, ensuring the highest quality and nutritional value for our customers.",
+        "categories": {
+            "fruits": {
+                "name": "Fruits",
+                "desc": "Fresh organic fruits"
+            },
+            "vegetables": {
+                "name": "Vegetables & Greens",
+                "desc": "Seasonal vegetables and greens"
+            },
+            "trees": {
+                "name": "Trees & Plantation Crops",
+                "desc": "Plantation crops and timber"
+            },
+            "dairy": {
+                "name": "Dairy & Livestock",
+                "desc": "Organic dairy and livestock"
+            },
+            "poultry": {
+                "name": "Poultry",
+                "desc": "Free-range poultry"
+            },
+            "natural": {
+                "name": "Natural Farm Products",
+                "desc": "Natural and organic products"
+            }
+        }
+    },
+    "gallery": {
+        "title": "Gallery",
+        "subtitle": "A visual journey through Dandin's Farm",
+        "backCategories": "Back to all categories",
+        "photos": "{{count}} photos",
+        "viewGallery": "View gallery →",
+        "visitFarm": "Visit Our Farm",
+        "visitDesc": "Experience the beauty of organic farming firsthand. Schedule a farm visit to see our crops, meet our animals, and learn about sustainable agriculture practices.",
+        "contactVisit": "Contact Us to Schedule a Visit",
+        "categories": {
+            "views": {
+                "title": "Farm Views",
+                "desc": "Scenic views of our organic farm"
+            },
+            "crops": {
+                "title": "Our Crops",
+                "desc": "Fresh organic produce from our fields"
+            },
+            "animals": {
+                "title": "Farm Animals",
+                "desc": "Our friendly farm companions"
+            },
+            "products": {
+                "title": "Products",
+                "desc": "Ready-to-harvest organic produce"
+            },
+            "practices": {
+                "title": "Practices We Follow",
+                "desc": "Traditional and natural farming methods"
+            }
+        }
+    },
+    "education": {
+        "title": "Learn Organic Farming",
+        "subtitle": "Educational content from Farming With AI Raitha",
+        "channelTitle": "Our YouTube Channel",
+        "channelDesc": "Subscribe to our YouTube channel where we share practical knowledge about organic farming, sustainable agriculture practices, and innovative farming techniques. Learn from our real farm experiences and start your own organic farming journey.",
+        "visitChannel": "Visit Our Channel",
+        "featuredVideos": "Featured Videos About Dandin's Farm",
+        "watchYoutube": "Watch on YouTube",
+        "featuredPlaylists": "Featured Playlists",
+        "videosCount": "{{count}}+ videos",
+        "watchNow": "Watch now →",
+        "features": {
+            "beginner": {
+                "title": "Beginner Friendly",
+                "desc": "Start from basics with step-by-step tutorials perfect for newcomers to organic farming."
+            },
+            "practical": {
+                "title": "Practical Knowledge",
+                "desc": "Learn from real farm experiences, challenges, and solutions that actually work."
+            },
+            "profit": {
+                "title": "Profit-Focused",
+                "desc": "Understand the business side of farming with proven profit models and strategies."
+            }
+        },
+        "joinCommunity": "Join Our Community",
+        "joinDesc": "Subscribe to our channel and become part of a growing community of organic farmers. Get regular updates on new videos, farming tips, and exclusive content. Let's learn and grow together!",
+        "subscribeNow": "Subscribe Now",
+        "playlists": {
+            "organic-farming": "Complete guide to organic farming practices, from soil preparation to harvest without using chemicals.",
+            "smart-farming": "Learn how to use technology and innovative techniques to make farming more efficient and productive.",
+            "profit-model": "Learn how to maximize profits from just one acre of land with strategic crop planning and management.",
+            "crop-care": "Expert guidance on crop care, maintenance, and tips for healthy plant growth and better yields."
+        }
+    },
+    "contact": {
+        "title": "Contact Us",
+        "subtitle": "Get in touch for inquiries about our organic produce",
+        "info": {
+            "phone": {
+                "label": "Phone",
+                "val": "+91 96112 13993",
+                "sub": "Mon-Sat, 8 AM - 5 PM"
+            },
+            "email": {
+                "label": "Email",
+                "val": "dandinhm@gmail.com",
+                "sub": "Response within 24 hours"
+            },
+            "location": {
+                "label": "Location",
+                "val": "Haveri, Karnataka, India",
+                "sub": "Visits by appointment"
+            }
+        },
+        "form": {
+            "title": "Send Us a Message",
+            "labels": {
+                "name": "Name",
+                "email": "Email",
+                "phone": "Phone"
+            },
+            "placeholders": {
+                "name": "Enter your name",
+                "email": "Enter your email",
+                "phone": "Enter your phone"
+            },
+            "inquiryLabel": "Inquiry Type *",
+            "inquiries": {
+                "general": "General Inquiry",
+                "bulk": "Bulk Order",
+                "samples": "Request Samples",
+                "visit": "Farm Visit",
+                "collaboration": "Collaboration"
+            },
+            "messageLabel": "Message *",
+            "messagePlaceholder": "How can we help?",
+            "submit": "Send Message",
+            "successAlert": "Message sent successfully!",
+            "failAlert": "Failed to send message"
+        },
+        "voice": {
+            "title": "Speak with AI Raitha",
+            "desc": "Get instant answers about our organic produce via live voice call.",
+            "speakLive": "Speak Live with AI Raitha",
+            "connecting": "Connecting...",
+            "thinking": "Thinking...",
+            "speaking": "Speaking...",
+            "listening": "Listening...",
+            "connectionError": "Connection Error",
+            "endCall": "End Call"
+        },
+        "chat": {
+            "title": "AI Chat Agent",
+            "desc": "Prefer typing? Chat with us instantly.",
+            "placeholder": "Ask AI Raitha...",
+            "send": "Send",
+            "noReply": "No reply",
+            "serverError": "Error contacting server"
+        },
+        "sections": {
+            "visits": {
+                "title": "Farm Visits",
+                "subtitle": "Experience sustainable agriculture firsthand.",
+                "desc": "Schedule a farm visit to experience our 100% organic ecosystem. Perfect for students and aspiring farmers. Strictly by appointment only."
+            },
+            "bulk": {
+                "title": "Bulk Orders & Samples",
+                "subtitle": "We welcome bulk orders for our organic produce.",
+                "desc": "Whether you are a retailer or restaurant, we are equipped to meet your needs with quality from soil to sale.",
+                "points": [
+                    "Competitive wholesale pricing",
+                    "Fresh harvest guarantee",
+                    "Flexible delivery options",
+                    "Sample boxes available"
+                ]
+            }
+        }
+    },
+    "chatWidget": {
+        "welcome": "Hello! Welcome to Dandin's Farm. How can I help YOU today ?",
+        "respondError": "I'm having trouble responding right now. Please try again.",
+        "connectError": "Sorry, I'm having trouble connecting. Please try again or contact us directly.",
+        "title": "Dandin's Farm Assistant",
+        "online": "Online",
+        "placeholder": "Type your message..."
+    }
+}

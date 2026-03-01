@@ -1,6 +1,7 @@
 import { Camera, Leaf, Apple, Mountain, X, Sprout } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface GalleryImage {
   id: number;
@@ -9,21 +10,20 @@ interface GalleryImage {
 }
 
 interface Category {
-  title: string;
+  id: string;
   icon: typeof Mountain;
-  description: string;
   images: GalleryImage[];
 }
 
 export default function GalleryPage() {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   const categories: Category[] = [
     {
-      title: 'Farm Views',
+      id: 'views',
       icon: Mountain,
-      description: 'Scenic views of our organic farm',
       images: [
         { id: 1, alt: 'OurFarm-1', url: '/images/gallery/farm_views/1.jpeg?auto=compress&cs=tinysrgb&w=800' },
         { id: 2, alt: 'OurFarm-2', url: '/images/gallery/farm_views/2.jpg?auto=compress&cs=tinysrgb&w=800' },
@@ -58,9 +58,8 @@ export default function GalleryPage() {
       ],
     },
     {
-      title: 'Our Crops',
+      id: 'crops',
       icon: Leaf,
-      description: 'Fresh organic produce from our fields',
       images: [
         { id: 1, alt: 'FarmCrops-1', url: '/images/gallery/farm_crops/1.jpg?auto=compress&cs=tinysrgb&w=800' },
         { id: 2, alt: 'FarmCrops-2', url: '/images/gallery/farm_crops/2.jpg?auto=compress&cs=tinysrgb&w=800' },
@@ -79,15 +78,14 @@ export default function GalleryPage() {
         { id: 15, alt: 'FarmCrops-15', url: '/images/gallery/farm_crops/15.jpeg?auto=compress&cs=tinysrgb&w=800' },
         { id: 16, alt: 'FarmCrops-16', url: '/images/gallery/farm_crops/16.jpeg?auto=compress&cs=tinysrgb&w=800' },
         { id: 17, alt: 'FarmCrops-17', url: '/images/gallery/farm_crops/17.jpeg?auto=compress&cs=tinysrgb&w=800' },
-        { id: 18, alt: 'FarmCrops-18', url: '/images/gallery/farm_crops/18.jpeg?auto=compress&cs=tinysrgb&w=800' },		
+        { id: 18, alt: 'FarmCrops-18', url: '/images/gallery/farm_crops/18.jpeg?auto=compress&cs=tinysrgb&w=800' },
         { id: 19, alt: 'FarmCrops-19', url: '/images/gallery/farm_crops/19.png?auto=compress&cs=tinysrgb&w=800' },
-        { id: 20, alt: 'FarmCrops-20', url: '/images/gallery/farm_crops/20.png?auto=compress&cs=tinysrgb&w=800' },	
- ],
+        { id: 20, alt: 'FarmCrops-20', url: '/images/gallery/farm_crops/20.png?auto=compress&cs=tinysrgb&w=800' },
+      ],
     },
     {
-      title: 'Farm Animals',
+      id: 'animals',
       icon: Apple,
-      description: 'Our friendly farm companions',
       images: [
         { id: 1, alt: 'TippuDog', url: '/images/gallery/farm_animals/1.jpg?auto=compress&cs=tinysrgb&w=800' },
         { id: 2, alt: 'Gaurdian', url: '/images/gallery/farm_animals/2.jpg?auto=compress&cs=tinysrgb&w=800' },
@@ -122,11 +120,10 @@ export default function GalleryPage() {
       ],
     },
     {
-      title: 'Products',
+      id: 'products',
       icon: Camera,
-      description: 'Ready-to-harvest organic produce',
       images: [
-        { id: 1, alt: 'Products-1', url: '/images/gallery/products/1.jpg?auto=compress&cs=tinysrgb&w=800' },
+        { id: 1, alt: 'Products-1', url: '/images/gallery/products/1.jpeg?auto=compress&cs=tinysrgb&w=800' },
         { id: 2, alt: 'Products-2', url: '/images/gallery/products/2.jpg?auto=compress&cs=tinysrgb&w=800' },
         { id: 3, alt: 'Products-3', url: '/images/gallery/products/3.jpg?auto=compress&cs=tinysrgb&w=800' },
         { id: 4, alt: 'Products-4', url: '/images/gallery/products/4.jpeg?auto=compress&cs=tinysrgb&w=800' },
@@ -148,16 +145,19 @@ export default function GalleryPage() {
         { id: 20, alt: 'Products-20', url: '/images/gallery/products/20.png?auto=compress&cs=tinysrgb&w=800' },
         { id: 21, alt: 'Products-21', url: '/images/gallery/products/21.png?auto=compress&cs=tinysrgb&w=800' },
         { id: 22, alt: 'Products-22', url: '/images/gallery/products/22.png?auto=compress&cs=tinysrgb&w=800' },
-        { id: 23, alt: 'Products-23', url: '/images/gallery/products/23.png?auto=compress&cs=tinysrgb&w=800' },
+        { id: 23, alt: 'Products-23', url: '/images/gallery/products/23.jpg?auto=compress&cs=tinysrgb&w=800' },
         { id: 24, alt: 'Products-24', url: '/images/gallery/products/24.png?auto=compress&cs=tinysrgb&w=800' },
         { id: 25, alt: 'Products-25', url: '/images/gallery/products/25.png?auto=compress&cs=tinysrgb&w=800' },
-        { id: 26, alt: 'Products-26', url: '/images/gallery/products/26.png?auto=compress&cs=tinysrgb&w=800' },
+        { id: 26, alt: 'Products-26', url: '/images/gallery/products/26.jpeg?auto=compress&cs=tinysrgb&w=800' },
+        { id: 27, alt: 'Products-27', url: '/images/gallery/products/27.png?auto=compress&cs=tinysrgb&w=800' },
+        { id: 28, alt: 'Products-28', url: '/images/gallery/products/28.png?auto=compress&cs=tinysrgb&w=800' },
+        { id: 29, alt: 'Products-29', url: '/images/gallery/products/29.png?auto=compress&cs=tinysrgb&w=800' },
+        { id: 30, alt: 'Products-30', url: '/images/gallery/products/30.png?auto=compress&cs=tinysrgb&w=800' },
       ],
     },
     {
-      title: 'Practices We Follow',
+      id: 'practices',
       icon: Sprout,
-      description: 'Traditional and natural farming methods',
       images: [
         { id: 1, alt: 'Vermicompost', url: '/images/gallery/practices/1.jpg?auto=compress&cs=tinysrgb&w=800' },
         { id: 2, alt: 'Agri Pond', url: '/images/gallery/practices/2.jpg?auto=compress&cs=tinysrgb&w=800' },
@@ -203,7 +203,7 @@ export default function GalleryPage() {
             className="flex items-center space-x-2 text-zinc-400 hover:text-green-400 transition-colors mb-8"
           >
             <X size={20} />
-            <span>Back to all categories</span>
+            <span>{t('gallery.backCategories')}</span>
           </button>
 
           <div className="flex items-center space-x-4 mb-8">
@@ -211,8 +211,8 @@ export default function GalleryPage() {
               <selectedCategory.icon className="text-green-400" size={32} />
             </div>
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white">{selectedCategory.title}</h1>
-              <p className="text-zinc-400">{selectedCategory.description}</p>
+              <h1 className="text-4xl md:text-5xl font-bold text-white">{t(`gallery.categories.${selectedCategory.id}.title`)}</h1>
+              <p className="text-zinc-400">{t(`gallery.categories.${selectedCategory.id}.desc`)}</p>
             </div>
           </div>
 
@@ -244,23 +244,23 @@ export default function GalleryPage() {
     <div className="min-h-screen px-4 py-24">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
-          Gallery
+          {t('gallery.title')}
         </h1>
         <p className="text-xl text-zinc-400 mb-12">
-          A visual journey through Dandin's Farm
+          {t('gallery.subtitle')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {categories.map((category) => (
             <button
-              key={category.title}
+              key={category.id}
               onClick={() => setSelectedCategory(category)}
               className="group bg-zinc-900/50 rounded-2xl overflow-hidden border border-zinc-800 hover:border-green-600 transition-all hover:transform hover:scale-105"
             >
               <div className="relative aspect-video overflow-hidden">
                 <img
                   src={category.images[0].url}
-                  alt={category.title}
+                  alt={t(`gallery.categories.${category.id}.title`)}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
@@ -269,17 +269,17 @@ export default function GalleryPage() {
                     <div className="bg-green-900/50 p-2 rounded-lg">
                       <category.icon className="text-green-400" size={24} />
                     </div>
-                    <h3 className="text-xl font-bold text-white">{category.title}</h3>
+                    <h3 className="text-xl font-bold text-white">{t(`gallery.categories.${category.id}.title`)}</h3>
                   </div>
                 </div>
               </div>
 
               <div className="p-6">
-                <p className="text-zinc-400 text-sm mb-3">{category.description}</p>
+                <p className="text-zinc-400 text-sm mb-3">{t(`gallery.categories.${category.id}.desc`)}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500 text-sm">{category.images.length} photos</span>
+                  <span className="text-zinc-500 text-sm">{t('gallery.photos', { count: category.images.length })}</span>
                   <span className="text-green-400 group-hover:translate-x-1 transition-transform">
-                    View gallery →
+                    {t('gallery.viewGallery')}
                   </span>
                 </div>
               </div>
@@ -290,18 +290,17 @@ export default function GalleryPage() {
         <div className="mt-16 bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-2xl p-8 border border-green-800/50 text-center">
           <Camera size={48} className="mx-auto mb-4 text-green-400" />
           <h3 className="text-2xl font-bold text-white mb-4">
-            Visit Our Farm
+            {t('gallery.visitFarm')}
           </h3>
           <p className="text-zinc-300 max-w-2xl mx-auto mb-6">
-            Experience the beauty of organic farming firsthand. Schedule a farm visit to see our crops,
-            meet our animals, and learn about sustainable agriculture practices.
+            {t('gallery.visitDesc')}
           </p>
           <Link
             to="/contact"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors font-medium"
           >
-            Contact Us to Schedule a Visit
+            {t('gallery.contactVisit')}
           </Link>
         </div>
 
